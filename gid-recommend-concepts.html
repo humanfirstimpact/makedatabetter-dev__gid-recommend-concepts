@@ -1,0 +1,102 @@
+<!--
+  Wrapper data component for verifying recommended concepts
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="gid-api.html">
+
+<!--
+`gid-recommend-concepts`
+
+The `gid-recommend-concepts` element is a data component acting as a wrapper  on gid-api used for handling rest calls for verifying recommended
+concepts against a particular column for a particular concept.
+
+<gid-recommend-concepts api-url='https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev' 
+ concept-id ='100002'
+ column-id = '200009'
+ verify-val = 'YES'>        
+ </gid-recommend-concepts>
+
+
+@demo demo/index.html
+-->
+<dom-module id="gid-recommend-concepts">
+    <template>
+        
+
+        <gid-api auto=false
+                 http-method='PUT' api-url={{recommendedConceptUrl}} response='{{recommendedConceptResponse}}'
+                 api-timeout={{recommendedConceptParams}} api-params={{recommendedConceptParams}}></gid-api>
+
+    </template>
+    <script>
+        (function () {
+            'use strict';
+            Polymer({
+                is: 'gid-recommend-concepts',
+                properties: {
+                     recommendedConceptUrl: {
+                        type: String,
+                        notify: true
+                    },
+                    recommendedConceptTimeout: {
+                        type: Number,
+                        notify: true,
+                        value: 0
+                    },
+                    recommendedConceptResponse: {
+                        type: Object,
+                        notify: true,
+                        observer: 'recommendedResponseChanged'
+                    },
+                    recommendedConceptParams: {
+                        type: String,
+                        notify: true
+                    },
+                    
+                    conceptId: {
+                        type: String,
+                        notify: true,
+                        value: ''
+                    },
+                    columnId: {
+                        type: String,
+                        notify: true,
+                        value: ''
+                    },
+                    verifyVal:{
+                    	 type: String,
+                         notify: true,
+                         value: ''
+                    },
+                    apiUrl: {
+                        type: String,
+                        notify: true,
+                        value: '',
+                        observer: 'apiUrlChanged'
+                    }
+                },
+                apiUrlChanged: function () {
+                	var verify;
+                    this.recommendedConceptUrl = this.apiUrl + '/columns/' + this.columnId +
+                    							'/recommendedconcepts/'+ this.conceptId + '/verify';
+                    if(this.verifyVal === "YES"){
+                    	verify = 'Y';
+                    }
+                    else if(this.verifyVal === "NO"){
+                    	verify = 'F';
+                    }
+                    else{
+                    	verify = 'N';
+                    }
+                   	this.recommendedConceptParams= JSON.stringify({
+           	        	  "hv": verify});
+                },
+                recommendedResponseChanged: function (newvalue, oldvalue) {
+                    console.log(newvalue);
+                }
+            });
+        })();
+
+
+    </script>
+</dom-module>

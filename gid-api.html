@@ -1,0 +1,105 @@
+<!--
+  Wrapper component to handle rest calls
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<!--
+`gid-api`
+
+The `gid-api` element is a wrapper on iron ajax used for handling rest calls.
+
+    <gid-api auto=false
+			http-method="get" api-url="../assets/test.json" response={{ajaxResponse}}
+			api-timeout= 0  api-params='{"token": "AIzaSyAuecFZ9xJXbGDkQYWBmYrtzOGJD-iDIgI"}'>
+
+With `auto` set to `true`, the element performs a request whenever
+its `url`, `params` or `body` properties are changed. Automatically generated
+requests will be debounced in the case that multiple attributes are changed
+sequentially.
+
+Note: The `params` attribute must be double quoted JSON.
+
+You can trigger a request explicitly by calling `generateRequest` on the
+element.
+
+@demo demo/index.html
+-->
+<dom-module id="gid-api">
+  <template>
+         <iron-ajax
+            auto = {{auto}}
+		    url='{{apiUrl}}'
+		    params ='{{_processParams(apiParams)}}'
+		    content-type="application/json"
+            method="{{httpMethod}}"
+		    handle-as="json"
+		    last-response="{{response}}"
+		    last-error="{{error}}"
+		    debounce-duration="300"
+		    timeout = {{apiTimeout}}>
+		 </iron-ajax> 
+
+  </template>
+  <script>
+    (function() {
+     'use strict';
+      Polymer({
+        is:'gid-api',
+        properties:{
+        	apiUrl:  {
+       			type:String,
+       			notify:true
+        	},
+        	apiParams: {
+       			type:String,
+       			notify:true
+        	},
+        	attrName :{
+       			type:String,
+       			notify:true
+        	},
+        	apiHeader:  {
+       			type:String,
+       			notify:true
+        	},
+        	apiTimeout:{
+        		type: Number,
+    	        notify: true,
+    	        value: 0
+        	},
+   	     	response: {
+	   	        type: Object,
+	   	        notify: true
+           },
+           auto:{
+	       		 type:Boolean,
+	       	     notify: true,
+	       	     value:true
+       		},
+       		httpMethod:{
+       			type:String,
+       			notify:true,
+       			value:"GET"
+       		},
+       		error:{
+       			type:String,
+       			notify:true
+       		}
+        },
+        created:function(){
+        },
+        _processParams: function(apiParams){
+        	return JSON.parse(apiParams);
+        },
+        _getUrl: function(apiUrl){
+		   var params = this._processParams(this.apiParams);
+		   apiUrl = apiUrl + '?';
+		   for (var key in params){
+			   apiUrl= apiUrl + key + '=' + params[key];
+			}
+		   return apiUrl;
+       }
+      });
+    })();
+  </script>
+</dom-module>
