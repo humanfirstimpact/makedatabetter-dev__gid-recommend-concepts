@@ -73,7 +73,11 @@ concepts against a particular column for a particular concept.
                         notify: true,
                         value: '',
                         observer: 'apiUrlChanged'
-                    }
+                    },
+                    concepts: {
+                    	type: Array,
+                    	notify: true    
+                   }
                 },
                 apiUrlChanged: function () {
                 	var verify;
@@ -92,7 +96,12 @@ concepts against a particular column for a particular concept.
            	        	  "hv": verify});
                 },
                 recommendedResponseChanged: function (newvalue, oldvalue) {
-                    console.log(newvalue);
+                	this.concepts = [];
+                	if (newvalue != null) {
+                        this.async(function () {
+                            this.concepts = this.concepts.concat(newvalue);
+                        }, 500);
+                }
                 }
             });
         })();
