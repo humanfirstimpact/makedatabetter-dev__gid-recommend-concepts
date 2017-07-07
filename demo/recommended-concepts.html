@@ -1,0 +1,97 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../gid-recommend-concepts.html">
+<style>
+  	table, th, td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+	}
+	td {
+	    text-align: center;
+	}
+  </style>
+    
+<dom-module id="recommended-concepts">
+    <template>
+        
+    	 <gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
+         column-id = '200009'
+         recommendedconcepts = {{recommendedconcepts}}>
+         </gid-recommend-concepts>
+    	<gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
+    	column-id = '200009'
+        concept-id = "{{conceptId}}"
+        verify-val = "{{verifyVal}}"
+        verifiedconcepts = {{verifiedconcepts}}>        
+        </gid-recommend-concepts>
+		<div class="horizontal-section">
+		        <template is="dom-repeat" items="[[recommendedconcepts]]">
+		                  <p></p>
+						   {{item.label}}
+							<button type="button" id = "{{item.id}}" value = "YES" on-click = "verifyConcept">YES</button>
+							<button type="button" id = "{{item.id}}" value = "NO" on-click = "verifyConcept">NO</button>
+							<button type="button" id = "{{item.id}}" value = "MAYBE" on-click = "verifyConcept">MAYBE</button>
+		        </template>
+         </div>
+        <template is="dom-repeat" items="[[verifiedconcepts]]">
+            <div class="horizontal-section">
+                <p></p>
+                <table style="width:50%">
+				  <tr>
+				    <th>Concept Label</th>
+				    <th>Is verified</th> 
+				  </tr>
+				  <tr>
+				    <td>{{item.concept.label}}</td>
+				    <td>{{item.verified}}</td> 
+				  </tr>
+				</table>
+            </div>
+        </template>
+
+    </template>
+    <script>
+        (function () {
+            'use strict';
+            Polymer({
+                is: 'recommended-concepts',
+                properties: {
+                    conceptId: {
+                        type: String,
+                        notify: true,
+                        value: ''
+                    },
+                    columnId: {
+                        type: String,
+                        notify: true,
+                        value: ''
+                    },
+                    verifyVal:{
+                    	 type: String,
+                         notify: true,
+                         value: ''
+                    },
+                     apiUrl: {
+                    	 type: String,
+                         notify: true,
+                         value: ''
+                    },
+                    verifiedconcepts: {
+                    	type: Array,
+                    	notify: true    
+                   },
+                   recommendedconcepts: {
+                   	type: Array,
+                   	notify: true    
+                  }
+                },
+                verifyConcept: function(event){
+                	this.conceptId = event.currentTarget.id;
+                	this.verifyVal = event.currentTarget.value;
+                }
+
+            });
+        })();
+
+
+    </script>
+</dom-module>

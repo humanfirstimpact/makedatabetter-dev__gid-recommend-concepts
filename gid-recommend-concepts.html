@@ -1,5 +1,5 @@
 <!--
-  Wrapper data component for verifying recommended concepts
+  Wrapper data component for fetching and verifying recommended concepts
 -->
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="gid-api.html">
@@ -22,10 +22,14 @@ concepts against a particular column for a particular concept.
 <dom-module id="gid-recommend-concepts">
     <template>
         
+        <gid-api auto=false
+                 http-method='GET' api-url={{recommendedConceptUrl}} response='{{recommendedConceptResponse}}'
+                 api-timeout={{recommendedConceptParams}} api-params={{recommendedConceptParams}}></gid-api>
+        
 
         <gid-api auto=false
-                 http-method='PUT' api-url={{recommendedConceptUrl}} response='{{recommendedConceptResponse}}'
-                 api-timeout={{recommendedConceptParams}} api-params={{recommendedConceptParams}}></gid-api>
+                 http-method='PUT' api-url={{verifyConceptUrl}} response='{{verifyConceptResponse}}'
+                 api-timeout={{verifyConceptParams}} api-params={{verifyConceptParams}}></gid-api>
 
     </template>
     <script>
@@ -34,7 +38,25 @@ concepts against a particular column for a particular concept.
             Polymer({
                 is: 'gid-recommend-concepts',
                 properties: {
-                     recommendedConceptUrl: {
+                	verifyConceptUrl: {
+                        type: String,
+                        notify: true
+                    },
+                    verifyConceptTimeout: {
+                        type: Number,
+                        notify: true,
+                        value: 0
+                    },
+                    verifyConceptResponse: {
+                        type: Object,
+                        notify: true,
+                        observer: 'verifyResponseChanged'
+                    },
+                    verifyConceptParams: {
+                        type: String,
+                        notify: true
+                    },
+                    recommendedConceptUrl: {
                         type: String,
                         notify: true
                     },
@@ -52,7 +74,6 @@ concepts against a particular column for a particular concept.
                         type: String,
                         notify: true
                     },
-                    
                     conceptId: {
                         type: String,
                         notify: true,
@@ -61,47 +82,74 @@ concepts against a particular column for a particular concept.
                     columnId: {
                         type: String,
                         notify: true,
-                        value: ''
+                        value: '',
+                        observer: 'columnChanged'
                     },
                     verifyVal:{
                     	 type: String,
                          notify: true,
-                         value: ''
+                         value: '',
+                         observer: 'verifyValChanged'
                     },
-                    apiUrl: {
-                        type: String,
-                        notify: true,
-                        value: '',
-                        observer: 'apiUrlChanged'
+                     apiUrl: {
+                    	 type: String,
+                         notify: true,
+                         value: '',
+                         observer: 'apiUrlChanged'
                     },
-                    concepts: {
+                    verifiedconcepts: {
                     	type: Array,
                     	notify: true    
-                   }
+                   },
+                   recommendedconcepts: {
+                   	type: Array,
+                   	notify: true    
+                  }
                 },
-                apiUrlChanged: function () {
+                apiUrlChanged: function(){
+                		this.recommendedConceptUrl = this.apiUrl + '/columns/' + this.columnId +
+													'/recommendedconcepts' ;
+                },
+                verifyValChanged: function () {
                 	var verify;
-                    this.recommendedConceptUrl = this.apiUrl + '/columns/' + this.columnId +
-                    							'/recommendedconcepts/'+ this.conceptId + '/verify';
-                    if(this.verifyVal === "YES"){
-                    	verify = 'Y';
-                    }
-                    else if(this.verifyVal === "NO"){
-                    	verify = 'F';
-                    }
-                    else{
-                    	verify = 'N';
-                    }
-                   	this.recommendedConceptParams= JSON.stringify({
-           	        	  "hv": verify});
+                	if(this.verifyVal){
+	                    this.verifyConceptUrl = this.apiUrl + '/columns/' + this.columnId +
+	                    							'/recommendedconcepts/'+ this.conceptId + '/verify';
+	                    if(this.verifyVal === "YES"){
+	                    	verify = 'Y';
+	                    }
+	                    else if(this.verifyVal === "NO"){
+	                    	verify = 'F';
+	                    }
+	                    else{
+	                    	verify = 'N';
+	                    }
+	                   	this.verifyConceptParams= JSON.stringify({
+	           	        	  "hv": verify});
+                	}
+                	
                 },
-                recommendedResponseChanged: function (newvalue, oldvalue) {
-                	this.concepts = [];
+                verifyResponseChanged: function (newvalue, oldvalue) {
+                	this.verifiedconcepts = [];
                 	if (newvalue != null) {
                         this.async(function () {
-                            this.concepts = this.concepts.concat(newvalue);
+                            this.verifiedconcepts = this.verifiedconcepts.concat(newvalue);
                         }, 500);
-                }
+                	}
+                },
+//                 columnChanged: function(newvalue, oldvalue) {
+//                 	debugger
+//                 	if(this.columnId){
+//                 		this.recommendedConceptUrl = this.apiUrl + '/columns/' + this.columnId ;
+//                 	}
+//                 },
+                recommendedResponseChanged: function(newvalue, oldvalue) {
+                	this.recommendedconcepts = [];
+                	if (newvalue != null) {
+                        this.async(function () {
+                            this.recommendedconcepts = this.recommendedconcepts.concat(newvalue.recommendedconcepts);
+                        }, 500);
+                	}
                 }
             });
         })();

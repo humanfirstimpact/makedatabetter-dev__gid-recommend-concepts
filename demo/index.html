@@ -13,49 +13,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <title>gid-recommend-concepts</title>
 
-    <link rel="import" href="../gid-recommend-concepts.html">
-    <style>
-    	table, th, td {
-		    border: 1px solid grey;
-		    border-collapse: collapse;
-		}
-		td {
-		    text-align: center;
-		}
-    </style>
+    <link rel="import" href="recommended-concepts.html">
 </head>
 <body unresolved>
 <h1>Recommended Concepts Verification</h1>
+<recommended-concepts></recommended-concepts>
 
-<div class="horizontal-section-container">
-    <template is="dom-bind" id="app">
-        <gid-recommend-concepts api-url='https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev' 
-        concept-id ='100002'
-        column-id = '200009'
-        verify-val = 'YES'
-        concepts = {{concepts}}>        
-        </gid-recommend-concepts>
-        <template is="dom-repeat" items="[[concepts]]">
-            <div class="horizontal-section">
-                <p></p>
-                <table style="width:50%">
-				  <tr>
-				    <th>Concept Label</th>
-				    <th>Is verified</th> 
-				  </tr>
-				  <tr>
-				    <td>{{item.concept.label}}</td>
-				    <td>{{item.verified}}</td> 
-				  </tr>
-				</table>
-            </div>
-        </template>
-    </template>
-</div>
 
 <script>
     var app = document.querySelector('#app');
-
 
 </script>
 </body>
