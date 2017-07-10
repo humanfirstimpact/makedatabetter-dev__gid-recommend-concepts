@@ -10,6 +10,12 @@
 The `gid-recommend-concepts` element is a data component acting as a wrapper  on gid-api used for handling rest calls for verifying recommended
 concepts against a particular column for a particular concept.
 
+
+ <gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
+ column-id = '200009'
+ recommendedconcepts = {{recommendedconcepts}}>
+ </gid-recommend-concepts>
+ 
 <gid-recommend-concepts api-url='https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev' 
  concept-id ='100002'
  column-id = '200009'
@@ -126,6 +132,7 @@ concepts against a particular column for a particular concept.
 	                    }
 	                   	this.verifyConceptParams= JSON.stringify({
 	           	        	  "hv": verify});
+	                   	this.verifyConceptTimeout = this.verifyConceptTimeout - 1;
                 	}
                 	
                 },
