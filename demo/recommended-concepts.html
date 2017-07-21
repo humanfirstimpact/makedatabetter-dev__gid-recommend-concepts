@@ -19,6 +19,7 @@
          </gid-recommend-concepts>
     	<gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
     	column-id = '200009'
+    	be-verified = true
         concept-id = "{{conceptId}}"
         verify-val = "{{verifyVal}}"
         verifiedconcepts = {{verifiedconcepts}}>        
@@ -65,6 +66,11 @@
                         notify: true,
                         value: ''
                     },
+                    beVerified: {
+                  	  type: Boolean,
+                  	  notify: true,
+                  	  value: false
+                    },
                     verifyVal:{
                     	 type: String,
                          notify: true,
@@ -83,6 +89,7 @@
                    	type: Array,
                    	notify: true    
                   }
+                  
                 },
                 verifyConcept: function(event){
                 	this.conceptId = event.currentTarget.id;
