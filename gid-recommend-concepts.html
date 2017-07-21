@@ -112,8 +112,10 @@ concepts against a particular column for a particular concept.
                   }
                 },
                 columnChanged: function(){
+                	if(this.columnId){
                 		this.recommendedConceptUrl = this.apiUrl + '/columns/' + this.columnId +
 													'/recommendedconcepts' ;
+                	}
                 },
                 verifyValChanged: function () {
                 	var verify;
@@ -143,12 +145,6 @@ concepts against a particular column for a particular concept.
                         }, 500);
                 	}
                 },
-//                 columnChanged: function(newvalue, oldvalue) {
-//                 	debugger
-//                 	if(this.columnId){
-//                 		this.recommendedConceptUrl = this.apiUrl + '/columns/' + this.columnId ;
-//                 	}
-//                 },
                 recommendedResponseChanged: function(newvalue, oldvalue) {
                 	this.recommendedconcepts = [];
                 	if (newvalue != null) {
