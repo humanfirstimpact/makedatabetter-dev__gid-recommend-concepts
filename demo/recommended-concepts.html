@@ -14,41 +14,47 @@
     <template>
         
     	 <gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-         column-id = '200009'
+         column = '200009'  entity="RECOMMENDED-CONCEPTS"
          recommendedconcepts = {{recommendedconcepts}}>
          </gid-recommend-concepts>
-    	<gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-    	column-id = '200009'
-    	be-verified = true
-        concept-id = "{{conceptId}}"
-        verify-val = "{{verifyVal}}"
-        verifiedconcepts = {{verifiedconcepts}}>        
-        </gid-recommend-concepts>
-		<div class="horizontal-section">
-		        <template is="dom-repeat" items="[[recommendedconcepts]]">
-		                  <p></p>
-						   {{item.label}}
-							<button type="button" id = "{{item.id}}" value = "YES" on-click = "verifyConcept">YES</button>
-							<button type="button" id = "{{item.id}}" value = "NO" on-click = "verifyConcept">NO</button>
-							<button type="button" id = "{{item.id}}" value = "MAYBE" on-click = "verifyConcept">MAYBE</button>
-		        </template>
-         </div>
-        <template is="dom-repeat" items="[[verifiedconcepts]]">
-            <div class="horizontal-section">
-                <p></p>
-                <table style="width:50%">
-				  <tr>
-				    <th>Concept Label</th>
-				    <th>Is verified</th> 
-				  </tr>
-				  <tr>
-				    <td>{{item.concept.label}}</td>
-				    <td>{{item.verified}}</td> 
-				  </tr>
-				</table>
-            </div>
-        </template>
-
+          <template is="dom-if" if="[[recommendedconcepts.length]]">
+	          <div class="horizontal-section">
+			        <template is="dom-repeat" items="[[recommendedconcepts]]">
+			                  <p></p>
+							   {{item.label}}
+								<button type="button" id = "{{item.id}}" value = "YES" on-click = "verifyConcept">YES</button>
+								<button type="button" id = "{{item.id}}" value = "NO" on-click = "verifyConcept">NO</button>
+								<button type="button" id = "{{item.id}}" value = "MAYBE" on-click = "verifyConcept">MAYBE</button>
+			        </template>
+	         </div>
+		</template>
+		<template is="dom-if" if="[[beVerified]]">
+			<gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
+	    	column = '200009'
+	    	be-verified = {{beVerified}}
+	        concept = "{{concept}}"
+	        verify-val = "{{verifyVal}}"
+	        entity = "{{verifyConceptEntity}}"
+	        verifiedconcepts = {{verifiedconcepts}}>        
+	        </gid-recommend-concepts>
+		</template>
+		<template is="dom-if" if="[[verifiedconcepts.length]]">
+	        <template is="dom-repeat" items="[[verifiedconcepts]]">
+	            <div class="horizontal-section">
+	                <p></p>
+	                <table style="width:50%">
+					  <tr>
+					    <th>Concept Label</th>
+					    <th>Is verified</th> 
+					  </tr>
+					  <tr>
+					    <td>{{item.concept.label}}</td>
+					    <td>{{item.verified}}</td> 
+					  </tr>
+					</table>
+	            </div>
+	        </template>
+		</template>
     </template>
     <script>
         (function () {
@@ -56,20 +62,19 @@
             Polymer({
                 is: 'recommended-concepts',
                 properties: {
-                    conceptId: {
+                    concept: {
                         type: String,
                         notify: true,
                         value: ''
                     },
-                    columnId: {
+                    column: {
                         type: String,
                         notify: true,
                         value: ''
                     },
                     beVerified: {
                   	  type: Boolean,
-                  	  notify: true,
-                  	  value: false
+                  	  notify: true
                     },
                     verifyVal:{
                     	 type: String,
@@ -86,14 +91,21 @@
                     	notify: true    
                    },
                    recommendedconcepts: {
-                   	type: Array,
-                   	notify: true    
-                  }
+	                   	type: Array,
+	                   	notify: true    
+                   },
+                   verifyConceptEntity: {
+                	   type: String,
+                       notify: true,
+                       value: ''
+                   }
                   
                 },
                 verifyConcept: function(event){
-                	this.conceptId = event.currentTarget.id;
+                	this.concept = event.currentTarget.id;
                 	this.verifyVal = event.currentTarget.value;
+                	this.verifyConceptEntity = 'VERIFY-CONCEPT';
+                	this.beVerified = true;
                 }
 
             });
