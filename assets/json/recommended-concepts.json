@@ -1,0 +1,23 @@
+{
+	"recommendedconcepts": [{
+		"id": "100002",
+		"label": "SAMPLE FICO-Score",
+		"percentage": 65.0,
+		"verified": "Y"
+	}, {
+		"id": "100349",
+		"label": "SAMPLE Account-Number",
+		"percentage": 48.0,
+		"verified": "Y"
+	}, {
+		"id": "100355",
+		"label": "SAMPLE Annual-Income",
+		"percentage": 32.0,
+		"verified": "F"
+	}, {
+		"id": "100033",
+		"label": "SAMPLE City",
+		"percentage": 0.0,
+		"verified": "N"
+	}]
+}

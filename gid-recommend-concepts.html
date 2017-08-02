@@ -17,14 +17,14 @@ recommendedconcepts = {{recommendedconcepts}}>
  </gid-recommend-concepts>
  
 <gid-recommend-concepts
-api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-column = '200009'
-be-verified = true
-concept = '100002'
-verify-val = 'YES'
-entity = "VERIFY-CONCEPT"
-verifiedconcepts = {{verifiedconcepts}}> 
-</gid-recommend-concepts>
+	api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
+	column = '200009'
+	be-verified = true
+	concept = '100002'
+	verify-val = 'YES'
+	entity = "VERIFY-CONCEPT"
+	verifiedconcepts = {{verifiedconcepts}}> 
+	</gid-recommend-concepts>
 
 
 @demo demo/index.html
@@ -44,7 +44,7 @@ verifiedconcepts = {{verifiedconcepts}}>
 		
 		<!-- verify concept -->
 	        <gid-api auto=false
-	                 method='PUT' api-url={{verifyConceptUrl}} response='{{verifyConceptResponse}}'
+	                 method={{method}} api-url={{verifyConceptUrl}} response='{{verifyConceptResponse}}'
 	                 api-timeout={{verifyConceptParams}} api-params={{verifyConceptParams}}></gid-api>
         <!-- verify concept -->
 
@@ -140,6 +140,10 @@ verifiedconcepts = {{verifiedconcepts}}>
                    apiEntity: {
                    	   type: String,
                        notify: true
+                   },
+                   method: {
+                	   type: String,
+                       notify: true
                    }
                 },
                 pathReceived: function(){
@@ -191,10 +195,12 @@ verifiedconcepts = {{verifiedconcepts}}>
 	             verifyValChanged: function () {
 	            	 if(this.column && this.verifyVal && this.beVerified){
 	            		 if (!this.apiUrl) {
+	            			this.method = 'GET';
 		     	 			this.verifyConceptUrl = this.importPath + 'assets/json/' + this.entity.toLowerCase() + '.json';
 		     	 			this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
 	            		 }
 	            		 else {
+	            			this.method = 'PUT';
 	     	 				this.getEntityPath();
 	     	 			}
 	     	 		}
