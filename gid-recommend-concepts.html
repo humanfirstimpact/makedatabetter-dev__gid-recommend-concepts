@@ -30,12 +30,12 @@ concepts against a particular column for a particular concept.
     <template>
         
         <gid-api auto=false
-                 http-method='GET' api-url={{recommendedConceptUrl}} response='{{recommendedConceptResponse}}'
+                 method='GET' api-url={{recommendedConceptUrl}} response='{{recommendedConceptResponse}}'
                  api-timeout={{recommendedConceptParams}} api-params={{recommendedConceptParams}}></gid-api>
         
 
         <gid-api auto=false
-                 http-method='PUT' api-url={{verifyConceptUrl}} response='{{verifyConceptResponse}}'
+                 method='PUT' api-url={{verifyConceptUrl}} response='{{verifyConceptResponse}}'
                  api-timeout={{verifyConceptParams}} api-params={{verifyConceptParams}}></gid-api>
 
     </template>
