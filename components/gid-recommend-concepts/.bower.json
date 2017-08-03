@@ -1,0 +1,29 @@
+{
+  "name": "gid-recommend-concepts",
+  "main": "gid-recommend-concepts.html",
+  "authors": [
+    "Shreya Bharadwaj"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.6.0",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.4.4",
+    "polymer-global-variables": "1.1.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "gid-api": "makedatabetter-dev/gid-api"
+  },
+  "homepage": "https://github.com/makedatabetter-dev/gid-recommend-concepts",
+  "_release": "007e4be2bd",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "007e4be2bdf09708a4b56c91d94919c8f7f50db4"
+  },
+  "_source": "https://github.com/makedatabetter-dev/gid-recommend-concepts.git",
+  "_target": "*",
+  "_originalSource": "makedatabetter-dev/gid-recommend-concepts"
+}

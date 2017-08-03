@@ -1,0 +1,123 @@
+<!--
+  Wrapper component to handle rest calls
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+
+<script src="assets/js/gidRestApi.js"></script>
+<!--
+`gid-api`
+
+The `gid-api` element is a wrapper on iron ajax used for handling rest calls.
+
+    <gid-api auto=false
+			method="get" api-url="../assets/json/test.json" response={{ajaxResponse}}
+			api-timeout= 0  api-params='{"token": "AIzaSyAuecFZ9xJXbGDkQYWBmYrtzOGJD-iDIgI"}'>
+    </gid-api>
+
+With `auto` set to `true`, the element performs a request whenever
+its `url`, `params` or `body` properties are changed. Automatically generated
+requests will be debounced in the case that multiple attributes are changed
+sequentially.
+
+Note: The `params` attribute must be double quoted JSON.
+
+You can trigger a request explicitly by calling `generateRequest` on the
+element.
+
+@demo demo/index.html
+-->
+<dom-module id="gid-api">
+  <template>
+         <iron-ajax
+            auto = {{auto}}
+		    url = '{{apiUrl}}'
+		    body = "{{requestBody}}"
+		    params ='{{_processParams(apiParams)}}'
+		    content-type="application/json"
+            method="{{method}}"
+		    handle-as="json"
+		    last-response="{{response}}"
+		    last-error="{{error}}"
+		    debounce-duration="300"
+		    timeout = {{apiTimeout}}>
+		 </iron-ajax> 
+
+  </template>
+  <script>
+    (function() {
+     'use strict';
+      Polymer({
+        is:'gid-api',
+        properties:{
+        	apiUrl:  {
+       			type:String,
+       			notify:true
+        	},
+        	apiParams: {
+       			type:String,
+       			notify:true
+        	},
+        	attrName :{
+       			type:String,
+       			notify:true
+        	},
+        	apiHeader:  {
+       			type:String,
+       			notify:true
+        	},
+        	apiTimeout:{
+        		type: Number,
+    	        notify: true,
+    	        value: 0
+        	},
+   	     	response: {
+	   	        type: Object,
+	   	        notify: true
+           },
+           auto:{
+	       		 type:Boolean,
+	       	     notify: true,
+	       	     value:true
+       		},
+       		method:{
+       			type:String,
+       			notify:true,
+       			value:"GET"
+       		},
+       		error:{
+       			type:String,
+       			notify:true
+       		},
+       		requestBody: {
+       			type: Object,
+	   	        notify: true
+       		},
+       		entity: {
+       			type:String,
+       			notify:true,
+       			observer: 'entityReceived'
+       		},
+       		path: {
+       			type:String,
+       			notify:true,
+       			value: ''
+       			
+       		}
+       		
+       		
+        },
+        _processParams: function(apiParams){
+        	return JSON.parse(apiParams);
+        },
+        entityReceived: function(){
+        	var that = this;
+        	if(that.entity){
+	                    that.path = apis[that.entity.toLowerCase()];
+        	}
+        	 
+        }
+      });
+    })();
+  </script>
+</dom-module>
