@@ -44,7 +44,7 @@ recommendedconcepts = {{recommendedconcepts}}>
 		
 		<!-- verify concept -->
 	        <gid-api auto=false
-	                 method={{method}} api-url={{verifyConceptUrl}} response='{{verifyConceptResponse}}'
+	                 method='PUT' api-url={{verifyConceptUrl}} response='{{verifyConceptResponse}}'
 	                 api-timeout={{verifyConceptParams}} api-params={{verifyConceptParams}}></gid-api>
         <!-- verify concept -->
 
@@ -140,10 +140,6 @@ recommendedconcepts = {{recommendedconcepts}}>
                    apiEntity: {
                    	   type: String,
                        notify: true
-                   },
-                   method: {
-                	   type: String,
-                       notify: true
                    }
                 },
                 pathReceived: function(){
@@ -195,12 +191,10 @@ recommendedconcepts = {{recommendedconcepts}}>
 	             verifyValChanged: function () {
 	            	 if(this.column && this.verifyVal && this.beVerified){
 	            		 if (!this.apiUrl) {
-	            			this.method = 'GET';
-		     	 			this.verifyConceptUrl = this.importPath + 'assets/json/' + this.entity.toLowerCase() + '.json';
-		     	 			this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
+		     	 			//this.verifyConceptUrl = this.importPath + 'assets/json/' + this.entity.toLowerCase() + '.json';
+		     	 			//this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
 	            		 }
 	            		 else {
-	            			this.method = 'PUT';
 	     	 				this.getEntityPath();
 	     	 			}
 	     	 		}
