@@ -10,21 +10,27 @@
 The `gid-recommend-concepts` element is a data component acting as a wrapper  on gid-api used for handling rest calls for  fetching
 recommended concepts against a particular column and then verifying one/more concept(s)
 
-
+For fetching recommended concepts, the following rest call is used
+ 
 <gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-column = '200009'  entity="RECOMMENDED-CONCEPTS"
+column = '200009'
 recommendedconcepts = {{recommendedconcepts}}>
  </gid-recommend-concepts>
  
+ Here, 'column' is a mandatory parameter
+ 
+For verifying a particular concept, the following rest call is used 
+
 <gid-recommend-concepts
-	api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-	column = '200009'
-	be-verified = true
-	concept = '100002'
-	verify-val = 'YES'
-	entity = "VERIFY-CONCEPT"
-	verifiedconcepts = {{verifiedconcepts}}> 
-	</gid-recommend-concepts>
+api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
+column = '200009'
+be-verified = true
+concept = '100002'
+verify-val = 'YES'
+verifiedconcepts = {{verifiedconcepts}}> 
+</gid-recommend-concepts>
+	
+  Here, 'column', 'be-verified' , 'verify-val'  and 'concept' are mandatory parameters
 
 
 @demo demo/index.html
@@ -100,11 +106,6 @@ recommendedconcepts = {{recommendedconcepts}}>
                    	 type: String,
                         notify: true,
                         value: ''
-                   },
-                   entity: {
-                       type: String,
-                       notify: true,
-                       value: ''
                    },
                    beVerified:{
 	                   	 type: Boolean,
@@ -184,7 +185,7 @@ recommendedconcepts = {{recommendedconcepts}}>
 	        	                this.recommendedConceptTimeout =  this.recommendedConceptTimeout - 1;
             	 			}
             	 			else{
-            	 				this.getEntityPath();
+            	 				this.apiEntity = 'RECOMMENDED-CONCEPTS';
             	 			}
                 	}
                 },
@@ -195,16 +196,11 @@ recommendedconcepts = {{recommendedconcepts}}>
 		     	 			//this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
 	            		 }
 	            		 else {
-	     	 				this.getEntityPath();
+	            			 this.apiEntity = 'VERIFY-CONCEPT';
 	     	 			}
 	     	 		}
 	            },
-                getEntityPath: function(){
-                	if (this.entity) {
-                		this.apiEntity = this.entity;
-                	}
-                },
-
+                
                 verifyResponseChanged: function (newvalue, oldvalue) {
                 	this.verifiedconcepts = [];
                 	if (newvalue != null) {

@@ -5,11 +5,11 @@ recommended concepts against a particular column and then verifying one/more con
 
 
    The following is used for fetching the recommended concepts against a particular column.
-   The properties 'column' and 'entity' are mandatory.
+   Here, 'column' is a mandatory parameter
 
     <gid-recommend-concepts
     api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-	 column = '200009'  entity="RECOMMENDED-CONCEPTS"
+	 column = '200009'
 	 recommendedconcepts = {{recommendedconcepts}}>
 	 </gid-recommend-concepts>
  
@@ -60,7 +60,7 @@ recommended concepts against a particular column and then verifying one/more con
 
 
    The following is used for verifying a particular recommended concept.
-   The properties 'column' , 'concept', 'be-verified', verify-val' and 'entity' are mandatory.
+    Here, 'column', 'be-verified' , 'verify-val'  and 'concept' are mandatory parameters
 
 		<gid-recommend-concepts
 		api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
@@ -68,7 +68,6 @@ recommended concepts against a particular column and then verifying one/more con
 		be-verified = true
 		concept = '100002'
 		verify-val = 'YES'
-		entity = "VERIFY-CONCEPT"
 		verifiedconcepts = {{verifiedconcepts}}> 
 		</gid-recommend-concepts>
 
