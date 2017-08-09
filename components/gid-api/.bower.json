@@ -16,11 +16,11 @@
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
   },
   "homepage": "https://github.com/makedatabetter-dev/gid-api",
-  "_release": "b02230453d",
+  "_release": "6f28736cf4",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "b02230453d429b3ec8713a70e06a274c5f3a6ab7"
+    "commit": "6f28736cf4b0e36951203fe2f75947609ac3380a"
   },
   "_source": "https://github.com/makedatabetter-dev/gid-api.git",
   "_target": "*",

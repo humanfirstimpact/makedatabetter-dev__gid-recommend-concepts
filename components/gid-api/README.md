@@ -1,18 +1,5 @@
 # \<gid-api\>
 
-The `gid-api` element is a wrapper on iron ajax used for handling rest calls.
-
-    <gid-api auto=false
-			method="get" api-url="../assets/json/test.json" response={{ajaxResponse}}
-			api-timeout= 0  api-params='{"token": "AIzaSyAuecFZ9xJXbGDkQYWBmYrtzOGJD-iDIgI"}'>
-    </gid-api>
-
-With `auto` set to `true`, the element performs a request whenever its `url`, `params` or `body` properties are changed. Automatically generated requests will be debounced in the case that multiple attributes are changed sequentially.
-The `params` attribute must be double quoted JSON.
-
-You can trigger a request explicitly by calling `generateRequest` on the element.
-
-
 ## Install the Polymer-CLI
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.

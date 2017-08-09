@@ -1,14 +1,14 @@
 {
 	"items": [{
-			"name": "Ned Stark",
+			"name": "Sample User 1",
 			"id": "100680267"
 		},
 		{
-			"name": "John Snow",
+			"name": "Sample User 2",
 			"id": "100680315"
 		},
 		{
-			"name": "Arya Stark",
+			"name": "Sample user 3",
 			"id": "100680364"
 		}
 	]

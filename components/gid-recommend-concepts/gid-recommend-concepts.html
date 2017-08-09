@@ -7,24 +7,105 @@
 <!--
 `gid-recommend-concepts`
 
-The `gid-recommend-concepts` element is a data component acting as a wrapper  on gid-api used for handling rest calls for  fetching
+A data component acting as a wrapper  on gid-api used for handling rest calls for  fetching
 recommended concepts against a particular column and then verifying one/more concept(s)
 
 
-<gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-column = '200009'  entity="RECOMMENDED-CONCEPTS"
-recommendedconcepts = {{recommendedconcepts}}>
- </gid-recommend-concepts>
+   The following is used for fetching the recommended concepts against a particular column.
+   Here, 'column' is a mandatory parameter
+
+    <gid-recommend-concepts
+     api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev" column = '{{column}}'
+     recommendedconcepts = {{recommendedconcepts}}></gid-recommend-concepts>
  
-<gid-recommend-concepts
-	api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-	column = '200009'
-	be-verified = true
-	concept = '100002'
-	verify-val = 'YES'
-	entity = "VERIFY-CONCEPT"
-	verifiedconcepts = {{verifiedconcepts}}> 
-	</gid-recommend-concepts>
+ 
+   API endpoint:
+
+    GET /columns/{columnId}/recommendedconcepts
+
+   Input:
+
+     - Column Id 
+
+   Sample Input: (Query params)
+
+     GET /columns/200009/recommendedconcepts
+     
+   Output:
+
+     - List of recommended concepts
+
+
+   The output of this components will be as follows:
+
+    {
+		"recommendedconcepts": [{
+			"id": "100002",
+			"label": "FICO-Score",
+			"percentage": 65.0,
+			"verified": "Y"
+		}, {
+			"id": "100349",
+			"label": "Account-Number",
+			"percentage": 48.0,
+			"verified": "Y"
+		}, {
+			"id": "100355",
+			"label": "Annual-Income",
+			"percentage": 32.0,
+			"verified": "F"
+		}, {
+			"id": "100033",
+			"label": "City",
+			"percentage": 0.0,
+			"verified": "N"
+		}]
+	}
+
+
+
+   The following is used for verifying a particular recommended concept.
+    Here, 'column', 'be-verified' , 'verify-val'  and 'concept' are mandatory parameters
+
+		<gid-recommend-concepts
+		api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
+		column = '200009'
+		be-verified = true
+		concept = '100002'
+		verify-val = 'YES'
+		verifiedconcepts = {{verifiedconcepts}}> 
+		</gid-recommend-concepts>
+
+   API endpoint:
+
+    PUT /columns/{columnId}/recommendedconcepts/{conceptId}
+    
+   Sample Input: (Query params)
+
+     PUT /columns/200009/recommendedconcepts/100002/verify?hv=Y
+
+   Input:
+
+     - Column Id 
+     - Concept Id
+
+   Output:
+
+     - Details of the concept verified
+     
+   The output of this components will be as follows:
+
+	  {
+		"id": "400021",
+		"percentage": 65.0,
+		"verified": "Y",
+		"columnId": "200009",
+		"concept": {
+			"id": "100002",
+			"label": "FICO-Score"
+		},
+		"timeStamp": 1501673865370
+	}
 
 
 @demo demo/index.html
@@ -101,11 +182,6 @@ recommendedconcepts = {{recommendedconcepts}}>
                         notify: true,
                         value: ''
                    },
-                   entity: {
-                       type: String,
-                       notify: true,
-                       value: ''
-                   },
                    beVerified:{
 	                   	 type: Boolean,
 	                     notify: true,
@@ -180,11 +256,11 @@ recommendedconcepts = {{recommendedconcepts}}>
                 columnChanged: function(){
             	 		if(this.column && !this.beVerified){
             	 			if (!this.apiUrl) {
-	            	 			this.recommendedConceptUrl = this.importPath + 'assets/json/' + this.entity.toLowerCase() + '.json';
+	            	 			this.recommendedConceptUrl = this.importPath + 'assets/json/recommended-concepts.json';
 	        	                this.recommendedConceptTimeout =  this.recommendedConceptTimeout - 1;
             	 			}
             	 			else{
-            	 				this.getEntityPath();
+            	 				this.apiEntity = 'RECOMMENDED-CONCEPTS';
             	 			}
                 	}
                 },
@@ -195,16 +271,11 @@ recommendedconcepts = {{recommendedconcepts}}>
 		     	 			//this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
 	            		 }
 	            		 else {
-	     	 				this.getEntityPath();
+	            			 this.apiEntity = 'VERIFY-CONCEPT';
 	     	 			}
 	     	 		}
 	            },
-                getEntityPath: function(){
-                	if (this.entity) {
-                		this.apiEntity = this.entity;
-                	}
-                },
-
+                
                 verifyResponseChanged: function (newvalue, oldvalue) {
                 	this.verifiedconcepts = [];
                 	if (newvalue != null) {

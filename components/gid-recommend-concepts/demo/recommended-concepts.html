@@ -14,7 +14,7 @@
     <template>
         
     	 <gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-         column = '200009'  entity="RECOMMENDED-CONCEPTS"
+         column = '200009' 
          recommendedconcepts = {{recommendedconcepts}}>
          </gid-recommend-concepts>
           <template is="dom-if" if="[[recommendedconcepts.length]]">
@@ -34,7 +34,6 @@
 	    	be-verified = {{beVerified}}
 	        concept = "{{concept}}"
 	        verify-val = "{{verifyVal}}"
-	        entity = "{{verifyConceptEntity}}"
 	        verifiedconcepts = {{verifiedconcepts}}>        
 	        </gid-recommend-concepts>
 		</template>
@@ -93,18 +92,12 @@
                    recommendedconcepts: {
 	                   	type: Array,
 	                   	notify: true    
-                   },
-                   verifyConceptEntity: {
-                	   type: String,
-                       notify: true,
-                       value: ''
                    }
                   
                 },
                 verifyConcept: function(event){
                 	this.concept = event.currentTarget.id;
                 	this.verifyVal = event.currentTarget.value;
-                	this.verifyConceptEntity = 'VERIFY-CONCEPT';
                 	this.beVerified = true;
                 }
 

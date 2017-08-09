@@ -18,11 +18,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
 </head>
 <body unresolved>
-  <h1>Employee list</h1>
+  <h1>User list</h1>
   <div class="horizontal-section-container">
     <template is="dom-bind" id="app">
       <gid-api auto=false
-			method="get" api-url="../assets/json/test.json" response={{ajaxResponse}}
+			method="get" api-url="../assets/json/sample.json" response={{ajaxResponse}}
 			api-timeout= 0  api-params='{"token": "AIzaSyAuecFZ9xJXbGDkQYWBmYrtzOGJD-iDIgI"}'> </gid-api>
 
         <template is="dom-repeat" items="[[ajaxResponse.items]]">
