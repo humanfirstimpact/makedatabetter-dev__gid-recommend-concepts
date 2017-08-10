@@ -21,7 +21,7 @@ recommended concepts against a particular column and then verifying one/more con
  
    API endpoint:
 
-    GET /columns/{columnId}/recommendedconcepts
+    GET /columns/{id}/domains         
 
    Input:
 
@@ -29,7 +29,7 @@ recommended concepts against a particular column and then verifying one/more con
 
    Sample Input: (Query params)
 
-     GET /columns/200009/recommendedconcepts
+     GET /columns/200009/domains
      
    Output:
 
@@ -42,22 +42,22 @@ recommended concepts against a particular column and then verifying one/more con
 		"recommendedconcepts": [{
 			"id": "100002",
 			"label": "FICO-Score",
-			"percentage": 65.0,
+			"relevance": 65.0,
 			"verified": "Y"
 		}, {
 			"id": "100349",
 			"label": "Account-Number",
-			"percentage": 48.0,
+			"relevance": 48.0,
 			"verified": "Y"
 		}, {
 			"id": "100355",
 			"label": "Annual-Income",
-			"percentage": 32.0,
+			"relevance": 32.0,
 			"verified": "F"
 		}, {
 			"id": "100033",
 			"label": "City",
-			"percentage": 0.0,
+			"relevance": 0.0,
 			"verified": "N"
 		}]
 	}
