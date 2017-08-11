@@ -278,6 +278,8 @@ recommended concepts against a particular column and then verifying one/more con
                 
                 verifyResponseChanged: function (newvalue, oldvalue) {
                 	this.verifiedconcepts = [];
+                	 this.apiEntity = '';
+                     this.path = '';
                 	if (newvalue != null) {
                         this.async(function () {
                             this.verifiedconcepts = this.verifiedconcepts.concat(newvalue);
@@ -286,6 +288,8 @@ recommended concepts against a particular column and then verifying one/more con
                 },
                 recommendedResponseChanged: function(newvalue, oldvalue) {
                 	this.recommendedconcepts = [];
+	               	this.apiEntity = '';
+	                this.path = '';
                 	if (newvalue != null) {
                         this.async(function () {
                             this.recommendedconcepts = this.recommendedconcepts.concat(newvalue.recommendedconcepts);
