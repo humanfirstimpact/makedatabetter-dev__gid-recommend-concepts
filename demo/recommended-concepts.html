@@ -14,7 +14,7 @@
     <template>
         
     	 <gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-         column = '200009' 
+         column = '200009' api-token = 'VVNfMjItMzg0MjY1N18xMTA1MTY0MzI5NzY0MTUwMjQ1MTUxMTQ1MzI3MDFY'
          recommendedconcepts = {{recommendedconcepts}}>
          </gid-recommend-concepts>
           <template is="dom-if" if="[[recommendedconcepts.length]]">
@@ -31,6 +31,7 @@
 		<template is="dom-if" if="[[beVerified]]">
 			<gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
 	    	column = '200009'
+	    	api-token = 'VVNfMjItMzg0MjY1N18xMTA1MTY0MzI5NzY0MTUwMjQ1MTUxMTQ1MzI3MDFY'
 	    	be-verified = {{beVerified}}
 	        concept = "{{concept}}"
 	        verify-val = "{{verifyVal}}"

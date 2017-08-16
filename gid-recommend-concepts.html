@@ -120,13 +120,15 @@ recommended concepts against a particular column and then verifying one/more con
        <!-- fetch recommended concepts  -->
 	        <gid-api auto=false
 	                 method='GET' api-url={{recommendedConceptUrl}} response='{{recommendedConceptResponse}}'
-	                 api-timeout={{recommendedConceptParams}} api-params={{recommendedConceptParams}}></gid-api>
+	                 api-params={{recommendedConceptParams}} api-token={{recommendedConceptsToken}}
+	                 api-timeout={{recommendedConceptParams}}></gid-api>
        <!-- fetch recommended concepts  -->
 		
 		<!-- verify concept -->
 	        <gid-api auto=false
 	                 method='PUT' api-url={{verifyConceptUrl}} response='{{verifyConceptResponse}}'
-	                 api-timeout={{verifyConceptParams}} api-params={{verifyConceptParams}}></gid-api>
+	                 api-params={{verifyConceptParams}} api-token={{verifyConceptToken}}
+	                 api-timeout={{verifyConceptParams}}></gid-api>
         <!-- verify concept -->
 
     </template>
@@ -136,6 +138,11 @@ recommended concepts against a particular column and then verifying one/more con
             Polymer({
                 is: 'gid-recommend-concepts',
                 properties: {
+                	apiToken: {
+                    	type: String,
+                        notify: true,
+                        value : ''
+                    },
                 	verifyConceptUrl: {
                         type: String,
                         notify: true
@@ -152,6 +159,10 @@ recommended concepts against a particular column and then verifying one/more con
                     },
                     verifyConceptParams: {
                         type: String,
+                        notify: true
+                    },
+                    verifyConceptToken: {
+                    	type: String,
                         notify: true
                     },
                     recommendedConceptUrl: {
@@ -172,13 +183,17 @@ recommended concepts against a particular column and then verifying one/more con
                         type: String,
                         notify: true
                     },
+                    recommendedConceptsToken: {
+                    	type: String,
+                        notify: true
+                    },
                     concept: {
                         type: String,
                         notify: true,
                         value: ''
                     },
                     apiUrl: {
-                   	 type: String,
+                   	 	type: String,
                         notify: true,
                         value: ''
                    },
@@ -233,6 +248,9 @@ recommended concepts against a particular column and then verifying one/more con
                			url = this.apiUrl + res.join("");
                			if(this.column && !this.beVerified){
             	 			this.recommendedConceptUrl = url;
+            	 			if(this.apiToken){
+                   				this.recommendedConceptsToken =  this.apiToken;
+                   			}
         	                this.recommendedConceptTimeout =  this.recommendedConceptTimeout - 1;
             	 		}
             	 		else if(this.column && this.verifyVal && this.beVerified){
@@ -248,6 +266,9 @@ recommended concepts against a particular column and then verifying one/more con
     	                    }
     	                   	this.verifyConceptParams= JSON.stringify({
     	           	        	  "hv": verify});
+    	                   	if(this.apiToken){
+                   				this.verifyConceptToken =  this.apiToken;
+                   			}
             	 			this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
             	 		}
                 		
