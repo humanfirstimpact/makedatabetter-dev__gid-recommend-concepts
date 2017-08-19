@@ -38,28 +38,32 @@ recommended concepts against a particular column and then verifying one/more con
 
    The output of this components will be as follows:
 
-    {
-		"recommendedconcepts": [{
-			"id": "100002",
-			"label": "FICO-Score",
-			"relevance": 65.0,
-			"verified": "Y"
-		}, {
-			"id": "100349",
-			"label": "Account-Number",
-			"relevance": 48.0,
-			"verified": "Y"
-		}, {
-			"id": "100355",
-			"label": "Annual-Income",
-			"relevance": 32.0,
-			"verified": "F"
-		}, {
-			"id": "100033",
-			"label": "City",
-			"relevance": 0.0,
-			"verified": "N"
-		}]
+	    {
+	   "domains":[
+	      {
+		 "id":"4920055981064928686",
+		 "label":"Last Name",
+		 "relevance":"N",
+		 "verified":"1.54"
+	      },
+	      {
+		 "id":"221188726146740308",
+		 "label":"Date of Birth",
+		 "relevance":"N",
+		 "verified":"5.88"
+	      },
+	      {
+		 "id":"-886082613329644447",
+		 "label":"First Name",
+		 "relevance":"N",
+		 "verified":"5.88"
+	      }
+	   ],
+	   "_meta":{
+	      "total":3,
+	      "offset":0,
+	      "limit":10
+	   }
 	}
 
 
