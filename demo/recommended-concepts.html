@@ -1,218 +1,90 @@
-<!--
-  Wrapper data component for fetching and verifying recommended concepts
--->
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../gid-api/gid-api.html">
-
-<!--
-`gid-recommend-concepts`
-
-A data component acting as a wrapper  on gid-api used for handling rest calls for  fetching
-recommended concepts against a particular column and then verifying one/more concept(s)
-
-
-   The following is used for fetching the recommended concepts against a particular column.
-   Here, 'column' is a mandatory parameter
-
-    <gid-recommend-concepts
-     api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev" column = '{{column}}'
-     recommendedconcepts = {{recommendedconcepts}}></gid-recommend-concepts>
- 
- 
-   API endpoint:
-
-    GET /columns/{id}/domains         
-
-   Input:
-
-     - Column Id 
-
-   Sample Input: (Query params)
-
-     GET /columns/200009/domains
-     
-   Output:
-
-     - List of recommended concepts
-
-
-   The output of this components will be as follows:
-
-    {
-		"recommendedconcepts": [{
-			"id": "100002",
-			"label": "FICO-Score",
-			"relevance": 65.0,
-			"verified": "Y"
-		}, {
-			"id": "100349",
-			"label": "Account-Number",
-			"relevance": 48.0,
-			"verified": "Y"
-		}, {
-			"id": "100355",
-			"label": "Annual-Income",
-			"relevance": 32.0,
-			"verified": "F"
-		}, {
-			"id": "100033",
-			"label": "City",
-			"relevance": 0.0,
-			"verified": "N"
-		}]
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../gid-recommend-concepts.html">
+<style>
+  	table, th, td {
+    border: 1px solid grey;
+    border-collapse: collapse;
 	}
-
-
-
-   The following is used for verifying a particular recommended concept.
-    Here, 'column', 'be-verified' , 'verify-val'  and 'concept' are mandatory parameters
-
-		<gid-recommend-concepts
-		api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-		column = '200009'
-		be-verified = true
-		concept = '100002'
-		verify-val = 'YES'
-		verifiedconcepts = {{verifiedconcepts}}> 
-		</gid-recommend-concepts>
-
-   API endpoint:
-
-    PUT /columns/{columnId}/domains/{conceptId}
+	td {
+	    text-align: center;
+	}
+  </style>
     
-   Sample Input: (Query params)
-
-     PUT /columns/200009/domains/100002?verified=Y
-
-   Input:
-
-     - Column Id 
-     - Concept Id
-
-   Output:
-
-     - Details of the concept verified
-     
-   The output of this components will be as follows:
-
-	  {
-		"id": "400021",
-		"percentage": 65.0,
-		"verified": "Y",
-		"columnId": "200009",
-		"concept": {
-			"id": "100002",
-			"label": "FICO-Score"
-		},
-		"timeStamp": 1501673865370
-	}
-
-
-@demo demo/index.html
--->
-<dom-module id="gid-recommend-concepts">
+<dom-module id="recommended-concepts">
     <template>
-       
-       <!-- fetch entity path  -->
-        	<gid-api entity = '{{apiEntity}}' path='{{path}}'></gid-api>
-       <!--  fetch entity path -->
-       
-       <!-- fetch recommended concepts  -->
-	        <gid-api auto=false
-	                 method='GET' api-url={{recommendedConceptUrl}} response='{{recommendedConceptResponse}}'
-	                 api-params={{recommendedConceptParams}} api-token={{recommendedConceptsToken}}
-	                 api-timeout={{recommendedConceptParams}}></gid-api>
-       <!-- fetch recommended concepts  -->
-		
-		<!-- verify concept -->
-	        <gid-api auto=false
-	                 method='PUT' api-url={{verifyConceptUrl}} response='{{verifyConceptResponse}}'
-	                 api-params={{verifyConceptParams}} api-token={{verifyConceptToken}}
-	                 api-timeout={{verifyConceptParams}}></gid-api>
-        <!-- verify concept -->
-
+        
+    	 <gid-recommend-concepts api-url="https://srv-34-197-77-167.globalids.com:8443/api/v1"
+         column = '6877887334376552697' api-token = 'MTAxNjUwMzAxMTUwMzQ2NjAyODQxMzA5MDFY'
+         recommendedconcepts = {{recommendedconcepts}}>
+         </gid-recommend-concepts>
+          <template is="dom-if" if="[[recommendedconcepts.length]]">
+	          <div class="horizontal-section">
+			        <template is="dom-repeat" items="[[recommendedconcepts]]">
+			                  <p></p>
+							   {{item.label}}
+								<button type="button" id = "{{item.id}}" value = "YES" on-click = "verifyConcept">YES</button>
+								<button type="button" id = "{{item.id}}" value = "NO" on-click = "verifyConcept">NO</button>
+								<button type="button" id = "{{item.id}}" value = "MAYBE" on-click = "verifyConcept">MAYBE</button>
+			        </template>
+	         </div>
+		</template>
+		<template is="dom-if" if="[[beVerified]]">
+			<gid-recommend-concepts api-url="https://srv-34-197-77-167.globalids.com:8443/api/v1"
+	    	column = '6877887334376552697'
+	    	api-token = 'MTAxNjUwMzAxMTUwMzQ2NjAyODQxMzA5MDFY'
+	    	be-verified = {{beVerified}}
+	        concept = "{{concept}}"
+	        verify-val = "{{verifyVal}}"
+	        verifiedconcepts = {{verifiedconcepts}}>        
+	        </gid-recommend-concepts>
+		</template>
+		<template is="dom-if" if="[[verifiedconcepts.length]]">
+	        <template is="dom-repeat" items="[[verifiedconcepts]]">
+	            <div class="horizontal-section">
+	                <p></p>
+	                <table style="width:50%">
+					  <tr>
+					    <th>Concept Label</th>
+					    <th>Is verified</th> 
+					  </tr>
+					  <tr>
+					    <td>{{item.label}}</td>
+					    <td>{{item.verified}}</td> 
+					  </tr>
+					</table>
+	            </div>
+	        </template>
+		</template>
     </template>
     <script>
         (function () {
             'use strict';
             Polymer({
-                is: 'gid-recommend-concepts',
+                is: 'recommended-concepts',
                 properties: {
-                	apiToken: {
-                    	type: String,
-                        notify: true,
-                        value : ''
-                    },
-                	verifyConceptUrl: {
-                        type: String,
-                        notify: true
-                    },
-                    verifyConceptTimeout: {
-                        type: Number,
-                        notify: true,
-                        value: 0
-                    },
-                    verifyConceptResponse: {
-                        type: Object,
-                        notify: true,
-                        observer: 'verifyResponseChanged'
-                    },
-                    verifyConceptParams: {
-                        type: String,
-                        notify: true
-                    },
-                    verifyConceptToken: {
-                    	type: String,
-                        notify: true
-                    },
-                    recommendedConceptUrl: {
-                        type: String,
-                        notify: true
-                    },
-                    recommendedConceptTimeout: {
-                        type: Number,
-                        notify: true,
-                        value: 0
-                    },
-                    recommendedConceptResponse: {
-                        type: Object,
-                        notify: true,
-                        observer: 'recommendedResponseChanged'
-                    },
-                    recommendedConceptParams: {
-                        type: String,
-                        notify: true
-                    },
-                    recommendedConceptsToken: {
-                    	type: String,
-                        notify: true
-                    },
                     concept: {
                         type: String,
                         notify: true,
                         value: ''
                     },
-                    apiUrl: {
-                   	 	type: String,
-                        notify: true,
-                        value: ''
-                   },
-                   beVerified:{
-	                   	 type: Boolean,
-	                     notify: true,
-	                     value: false
-                 	},
                     column: {
                         type: String,
                         notify: true,
-                        value: '',
-                        observer: 'columnChanged'
+                        value: ''
+                    },
+                    beVerified: {
+                  	  type: Boolean,
+                  	  notify: true
                     },
                     verifyVal:{
                     	 type: String,
                          notify: true,
-                         value: '',
-                         observer: 'verifyValChanged'
+                         value: ''
+                    },
+                     apiUrl: {
+                    	 type: String,
+                         notify: true,
+                         value: ''
                     },
                     verifiedconcepts: {
                     	type: Array,
@@ -221,102 +93,15 @@ recommended concepts against a particular column and then verifying one/more con
                    recommendedconcepts: {
 	                   	type: Array,
 	                   	notify: true    
-                   },
-                   path: {
-                   	   type: String,
-                       notify: true,
-                       value: '',
-                       observer: 'pathReceived'
-                   },
-                   apiEntity: {
-                   	   type: String,
-                       notify: true
                    }
+                  
                 },
-                pathReceived: function(){
-                	var url = '';
-                	var verify = '';
-                	if(this.path){
-                		var res = this.path.split(/{([^}]+)}/);
-                		for (var i in res) {
-                			if(!res[i].startsWith("/")){
-                					if(this[res[i]]){
-                						res[i] = this[res[i]];
-                					}
-                			}
-                		}
-               			url = this.apiUrl + res.join("");
-               			if(this.column && !this.beVerified){
-            	 			this.recommendedConceptUrl = url;
-            	 			if(this.apiToken){
-                   				this.recommendedConceptsToken =  this.apiToken;
-                   			}
-        	                this.recommendedConceptTimeout =  this.recommendedConceptTimeout - 1;
-            	 		}
-            	 		else if(this.column && this.verifyVal && this.beVerified){
-            	 			this.verifyConceptUrl = url;
-            	 			if(this.verifyVal === "YES"){
-    	                    	verify = 'Y';
-    	                    }
-    	                    else if(this.verifyVal === "NO"){
-    	                    	verify = 'F';
-    	                    }
-    	                    else{
-    	                    	verify = 'N';
-    	                    }
-    	                   	this.verifyConceptParams= JSON.stringify({
-    	           	        	  "verified": verify});
-    	                   	if(this.apiToken){
-                   				this.verifyConceptToken =  this.apiToken;
-                   			}
-            	 			this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
-            	 		}
-                		
-                	}
-                },
-                columnChanged: function(){
-            	 		if(this.column && !this.beVerified){
-            	 			if (!this.apiUrl) {
-	            	 			this.recommendedConceptUrl = this.importPath + 'assets/json/recommended-concepts.json';
-	        	                this.recommendedConceptTimeout =  this.recommendedConceptTimeout - 1;
-            	 			}
-            	 			else{
-            	 				this.apiEntity = 'RECOMMENDED-CONCEPTS';
-            	 			}
-                	}
-                },
-	             verifyValChanged: function () {
-	            	 if(this.column && this.verifyVal && this.beVerified){
-	            		 if (!this.apiUrl) {
-		     	 			//this.verifyConceptUrl = this.importPath + 'assets/json/verify-concept.json';
-		     	 			//this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
-	            		 }
-	            		 else {
-	            			 this.apiEntity = 'VERIFY-CONCEPT';
-	     	 			}
-	     	 		}
-	            },
-                
-                verifyResponseChanged: function (newvalue, oldvalue) {
-                	this.verifiedconcepts = [];
-                	 this.apiEntity = '';
-                     this.path = '';
-                	if (newvalue != null) {
-                        this.async(function () {
-                            this.verifiedconcepts = this.verifiedconcepts.concat(newvalue);
-                        }, 500);
-                	}
-                },
-                recommendedResponseChanged: function(newvalue, oldvalue) {
-                	this.recommendedconcepts = [];
-	               	this.apiEntity = '';
-	                this.path = '';
-                	if (newvalue != null) {
-                        this.async(function () {
-                            this.recommendedconcepts = this.recommendedconcepts.concat(newvalue.recommendedconcepts);
-                        }, 500);
-                	}
+                verifyConcept: function(event){
+                	this.concept = event.currentTarget.id;
+                	this.verifyVal = event.currentTarget.value;
+                	this.beVerified = true;
                 }
+
             });
         })();
 

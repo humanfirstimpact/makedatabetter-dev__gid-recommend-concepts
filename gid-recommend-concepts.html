@@ -130,7 +130,8 @@ recommended concepts against a particular column and then verifying one/more con
 		
 		<!-- verify concept -->
 	        <gid-api auto=false
-	                 method='PUT' api-url={{verifyConceptUrl}} response='{{verifyConceptResponse}}'
+	                 method='PUT' api-url={{verifyConceptUrl}} api-content-type = 'application/x-www-form-urlencoded' 
+	                 response='{{verifyConceptResponse}}'
 	                 api-params={{verifyConceptParams}} api-token={{verifyConceptToken}}
 	                 api-timeout={{verifyConceptParams}}></gid-api>
         <!-- verify concept -->
@@ -317,7 +318,7 @@ recommended concepts against a particular column and then verifying one/more con
 	                this.path = '';
                 	if (newvalue != null) {
                         this.async(function () {
-                            this.recommendedconcepts = this.recommendedconcepts.concat(newvalue.recommendedconcepts);
+                            this.recommendedconcepts = this.recommendedconcepts.concat(newvalue.domains);
                         }, 500);
                 	}
                 }
