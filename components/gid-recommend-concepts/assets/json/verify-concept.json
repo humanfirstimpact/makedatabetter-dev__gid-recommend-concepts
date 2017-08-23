@@ -1,11 +1,11 @@
 {
-	"id": "400021",
-	"percentage": 65.0,
-	"verified": "Y",
-	"columnId": "200009",
-	"concept": {
-		"id": "100002",
-		"label": "SAMPLE FICO-Score"
-	},
-	"timeStamp": 1501673865370
-}
+		"id": "400021",
+		"percentage": 65.0,
+		"verified": "Y",
+		"columnId": "200009",
+		"concept": {
+			"id": "100002",
+			"label": "FICO-Score"
+		},
+		"timeStamp": 1501673865370
+	}

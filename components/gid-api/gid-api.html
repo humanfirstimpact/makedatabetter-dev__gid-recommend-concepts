@@ -12,7 +12,7 @@ The `gid-api` element is a wrapper on iron ajax used for handling rest calls.
 
     <gid-api auto=false
 			method="get" api-url="../assets/json/test.json" response={{ajaxResponse}}
-			api-timeout= 0  api-params='{"token": "AIzaSyAuecFZ9xJXbGDkQYWBmYrtzOGJD-iDIgI"}'>
+			api-timeout= 0>
     </gid-api>
 
 With `auto` set to `true`, the element performs a request whenever
@@ -34,9 +34,10 @@ element.
 		    url = '{{apiUrl}}'
 		    body = "{{requestBody}}"
 		    params ='{{_processParams(apiParams)}}'
-		    content-type="application/json"
+		    content-type="{{apiContentType}}"
             method="{{method}}"
 		    handle-as="json"
+		    headers = '{{apiHeader}}'
 		    last-response="{{response}}"
 		    last-error="{{error}}"
 		    debounce-duration="300"
@@ -58,13 +59,19 @@ element.
        			type:String,
        			notify:true
         	},
+        	apiContentType: {
+       			type: String,
+       			notify: true,
+       			value: 'application/json'
+       		},
         	attrName :{
        			type:String,
        			notify:true
         	},
         	apiHeader:  {
-       			type:String,
-       			notify:true
+       			type:Object,
+       			notify:true,
+       			value: {}
         	},
         	apiTimeout:{
         		type: Number,
@@ -87,7 +94,8 @@ element.
        		},
        		error:{
        			type:String,
-       			notify:true
+       			notify:true,
+       			observer: 'errorReceived'
        		},
        		requestBody: {
        			type: Object,
@@ -102,7 +110,12 @@ element.
        			type:String,
        			notify:true,
        			value: ''
-       			
+       		},
+       		apiToken: {
+       			type:String,
+       			notify:true,
+       			value: '',
+       			observer: 'apiTokenReceived'
        		}
        		
        		
@@ -112,10 +125,29 @@ element.
         },
         entityReceived: function(){
         	var that = this;
+        	var apiList = {};
+        	if(localStorage.hasOwnProperty('api-path')){
+        		apiList = JSON.parse(localStorage.getItem('api-path'));
+        	}
+        	else{
+        		apiList =  apiPath;
+        	}
         	if(that.entity){
-	                    that.path = apis[that.entity.toLowerCase()];
+	                    that.path = apiList[that.entity.toLowerCase()];
         	}
         	 
+        },
+        apiTokenReceived: function(){
+        	if(this.apiToken){
+        		this.apiHeader["Authorization"] = 'Bearer ' + this.apiToken;
+        	}
+        },
+        errorReceived: function(newvalue, oldvalue){
+        	if(newvalue !== null){
+        		if(newvalue.response.errorCode === "40101"){
+        			localStorage.clear();
+        		}
+        	}
         }
       });
     })();

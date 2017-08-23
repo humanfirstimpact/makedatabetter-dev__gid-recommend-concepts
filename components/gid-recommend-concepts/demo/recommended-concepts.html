@@ -13,8 +13,8 @@
 <dom-module id="recommended-concepts">
     <template>
         
-    	 <gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-         column = '200009' 
+    	 <gid-recommend-concepts api-url="https://srv-34-197-77-167.globalids.com:8443/api/v1"
+         column = '6877887334376552697' api-token = 'MTAxNjUwMzAxMTUwMzQ2NjAyODQxMzA5MDFY'
          recommendedconcepts = {{recommendedconcepts}}>
          </gid-recommend-concepts>
           <template is="dom-if" if="[[recommendedconcepts.length]]">
@@ -29,8 +29,9 @@
 	         </div>
 		</template>
 		<template is="dom-if" if="[[beVerified]]">
-			<gid-recommend-concepts api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-	    	column = '200009'
+			<gid-recommend-concepts api-url="https://srv-34-197-77-167.globalids.com:8443/api/v1"
+	    	column = '6877887334376552697'
+	    	api-token = 'MTAxNjUwMzAxMTUwMzQ2NjAyODQxMzA5MDFY'
 	    	be-verified = {{beVerified}}
 	        concept = "{{concept}}"
 	        verify-val = "{{verifyVal}}"
@@ -47,7 +48,7 @@
 					    <th>Is verified</th> 
 					  </tr>
 					  <tr>
-					    <td>{{item.concept.label}}</td>
+					    <td>{{item.label}}</td>
 					    <td>{{item.verified}}</td> 
 					  </tr>
 					</table>
