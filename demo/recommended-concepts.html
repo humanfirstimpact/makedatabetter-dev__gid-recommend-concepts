@@ -14,47 +14,59 @@
 	<template>
 
 		<gid-recommend-concepts api-url="https://srv-34-197-77-167.globalids.com:8443/api/v1"
-								column = '6877887334376552697' api-token = 'MTAxNjUwMzAxMTUwMzQ2NjAyODQxMzA5MDFY'
+								column = '6877887334376552697' api-token = 'MTAxNjUwMzAxMTUwMzU1NjY3ODU3MDA5MDFY'
+								fetch-recommended-concepts = true
 								recommendedconcepts = {{recommendedconcepts}}>
 		</gid-recommend-concepts>
-		<template is="dom-if" if="[[recommendedconcepts.length]]">
-			<div class="horizontal-section">
-				<template is="dom-repeat" items="[[recommendedconcepts]]">
-					<p></p>
-					{{item.label}}
-					<button type="button" id = "{{item.id}}" value = "YES" on-click = "verifyConcept">YES</button>
-					<button type="button" id = "{{item.id}}" value = "NO" on-click = "verifyConcept">NO</button>
-					<button type="button" id = "{{item.id}}" value = "MAYBE" on-click = "verifyConcept">MAYBE</button>
-				</template>
-			</div>
-		</template>
+<!-- 		<template is="dom-if" if="[[isConceptRecommendedSuccess]]"> -->
+			<template is="dom-if" if="[[recommendedconcepts.length]]">
+				<div class="horizontal-section">
+					<template is="dom-repeat" items="[[recommendedconcepts]]">
+						<p></p>
+						{{item.label}}
+						<button type="button" id = "{{item.id}}" value = "YES" on-click = "verifyConcept">YES</button>
+						<button type="button" id = "{{item.id}}" value = "NO" on-click = "verifyConcept">NO</button>
+						<button type="button" id = "{{item.id}}" value = "MAYBE" on-click = "verifyConcept">MAYBE</button>
+					</template>
+				</div>
+			</template>
+<!-- 		</template> -->
+<!-- 		<template is="dom-if" if="![[isConceptRecommendedSuccess]]"> -->
+<!--             <p>{{response.developerMessage}}</p> -->
+<!--         </template> -->
+        
 		<template is="dom-if" if="[[beVerified]]">
 			<gid-recommend-concepts api-url="https://srv-34-197-77-167.globalids.com:8443/api/v1"
 									column = '6877887334376552697'
-									api-token = 'MTAxNjUwMzAxMTUwMzQ2NjAyODQxMzA5MDFY'
+									api-token = 'MTAxNjUwMzAxMTUwMzU1NjY3ODU3MDA5MDFY'
 									be-verified = {{beVerified}}
 									concept = "{{concept}}"
 									verify-val = "{{verifyVal}}"
 									verifiedconcepts = {{verifiedconcepts}}>
 			</gid-recommend-concepts>
 		</template>
-		<template is="dom-if" if="[[verifiedconcepts.length]]">
-			<template is="dom-repeat" items="[[verifiedconcepts]]">
-				<div class="horizontal-section">
-					<p></p>
-					<table style="width:50%">
-						<tr>
-							<th>Concept Label</th>
-							<th>Is verified</th>
-						</tr>
-						<tr>
-							<td>{{item.label}}</td>
-							<td>{{item.verified}}</td>
-						</tr>
-					</table>
-				</div>
+<!-- 		<template is="dom-if" if="[[isConceptVerifySuccess]]"> -->
+			<template is="dom-if" if="[[verifiedconcepts.length]]">
+				<template is="dom-repeat" items="[[verifiedconcepts]]">
+					<div class="horizontal-section">
+						<p></p>
+						<table style="width:50%">
+							<tr>
+								<th>Concept Label</th>
+								<th>Is verified</th>
+							</tr>
+							<tr>
+								<td>{{item.label}}</td>
+								<td>{{item.verified}}</td>
+							</tr>
+						</table>
+					</div>
+				</template>
 			</template>
-		</template>
+<!-- 		</template> -->
+<!-- 		<template is="dom-if" if="![[isConceptVerifySuccess]]"> -->
+<!--                 <p>{{response.developerMessage}}</p> -->
+<!--         </template> -->
 	</template>
 	<script>
 		(function () {
@@ -88,19 +100,50 @@
 					},
 					verifiedconcepts: {
 						type: Array,
-						notify: true
+						notify: true,
+						observer: 'verifiedConceptsObserver'
 					},
 					recommendedconcepts: {
 						type: Array,
-						notify: true
-					}
-
+						notify: true,
+						observer: 'recommendedConceptsObserver'
+					},
+					isConceptVerifySuccess: {
+						type: Boolean,
+						notify: true,
+						value: false
+					},
+					isConceptRecommendedSuccess: {
+						type: Boolean,
+						notify: true,
+						value: false
+					},
 				},
 				verifyConcept: function(event){
 					this.concept = event.currentTarget.id;
 					this.verifyVal = event.currentTarget.value;
 					this.beVerified = true;
-				}
+				},
+				verifiedConceptsObserver: function () {
+		        	 if(this.verifiedconcepts){	
+						if(this.verifiedconcepts.errorCode){
+							this.isConceptVerifySuccess = false;
+						}
+						else{
+							this.isConceptVerifySuccess =  true;
+						}
+		        	 }
+		         },
+		         recommendedConceptsObserver: function () {
+		        	 if(this.recommendedconcepts){	
+						if(this.recommendedconcepts.errorCode){
+							this.isConceptRecommendedSuccess = false;
+						}
+						else{
+							this.isConceptRecommendedSuccess =  true;
+						}
+		        	 }
+		         }
 
 			});
 		})();

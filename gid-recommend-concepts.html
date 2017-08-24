@@ -114,12 +114,13 @@ recommended concepts against a particular column and then verifying one/more con
 	<template>
 
 		<!-- fetch entity path  -->
-		<gid-api entity = '{{apiEntity}}' path='{{path}}'></gid-api>
+		<gid-api entity = '{{apiEntity}}' path-key= '{{pathKey}}' path='{{path}}'></gid-api>
 		<!--  fetch entity path -->
 
 		<!-- fetch recommended concepts  -->
 		<gid-api auto=false
 				 method='GET' api-url={{recommendedConceptUrl}} response='{{recommendedConceptResponse}}'
+				 error = '{{recommendedConceptError}}'
 				 api-params={{recommendedConceptParams}} api-token={{recommendedConceptsToken}}
 				 api-timeout={{recommendedConceptParams}}></gid-api>
 		<!-- fetch recommended concepts  -->
@@ -127,7 +128,7 @@ recommended concepts against a particular column and then verifying one/more con
 		<!-- verify concept -->
 		<gid-api auto=false
 				 method='PUT' api-url={{verifyConceptUrl}} api-content-type = 'application/x-www-form-urlencoded'
-				 response='{{verifyConceptResponse}}'
+				 response='{{verifyConceptResponse}}' error = '{{verifyConceptError}}'
 				 api-params={{verifyConceptParams}} api-token={{verifyConceptToken}}
 				 api-timeout={{verifyConceptParams}}></gid-api>
 		<!-- verify concept -->
@@ -156,8 +157,13 @@ recommended concepts against a particular column and then verifying one/more con
 					verifyConceptResponse: {
 						type: Object,
 						notify: true,
-						observer: 'verifyResponseChanged'
+						observer: 'verifyResponseReceived'
 					},
+					verifyConceptError : {
+			 	   		type: String,
+		 	   	    	notify: true,
+		 	   	    	observer : 'verifyErrorReceived'
+		 	   		},
 					verifyConceptParams: {
 						type: String,
 						notify: true
@@ -178,8 +184,13 @@ recommended concepts against a particular column and then verifying one/more con
 					recommendedConceptResponse: {
 						type: Object,
 						notify: true,
-						observer: 'recommendedResponseChanged'
+						observer: 'recommendedResponseReceived'
 					},
+					recommendedConceptError : {
+			 	   		type: String,
+		 	   	    	notify: true,
+		 	   	    	observer : 'recommendedErrorReceived'
+		 	   		},
 					recommendedConceptParams: {
 						type: String,
 						notify: true
@@ -193,24 +204,12 @@ recommended concepts against a particular column and then verifying one/more con
 						notify: true,
 						value: ''
 					},
-					apiUrl: {
+					column: {
 						type: String,
 						notify: true,
 						value: ''
 					},
-					fetchRecommendedConcepts : {
-						type: Boolean,
-						notify: true,
-						value: false,
-						observer: 'fetchRecommendedConceptsObserver'
-					},
-					beVerified:{
-						type: Boolean,
-						notify: true,
-						value: false,
-						observer: 'beVerifiedObserver'
-					},
-					column: {
+					apiUrl: {
 						type: String,
 						notify: true,
 						value: ''
@@ -219,6 +218,18 @@ recommended concepts against a particular column and then verifying one/more con
 						type: String,
 						notify: true,
 						value: ''
+					},
+					beVerified:{
+						type: Boolean,
+						notify: true,
+						value: false,
+						observer: 'beVerifiedObserver'
+					},
+					fetchRecommendedConcepts : {
+						type: Boolean,
+						notify: true,
+						value: false,
+						observer: 'fetchRecommendedConceptsObserver'
 					},
 					verifiedconcepts: {
 						type: Array,
@@ -288,6 +299,7 @@ recommended concepts against a particular column and then verifying one/more con
 								this.recommendedConceptTimeout =  this.recommendedConceptTimeout - 1;
 							}
 							else{
+								this.pathKey =  'default';
 								this.apiEntity = 'RECOMMENDED-CONCEPTS';
 							}
 						}
@@ -302,6 +314,7 @@ recommended concepts against a particular column and then verifying one/more con
 								//this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
 							}
 							else {
+								this.pathKey =  'default';
 								this.apiEntity = 'VERIFY-CONCEPT';
 							}
 						}
@@ -309,7 +322,7 @@ recommended concepts against a particular column and then verifying one/more con
 
 				},
 
-				verifyResponseChanged: function (newvalue, oldvalue) {
+				verifyResponseReceived: function (newvalue, oldvalue) {
 					this.verifiedconcepts = [];
 					this.reset();
 					if (newvalue != null) {
@@ -318,7 +331,16 @@ recommended concepts against a particular column and then verifying one/more con
 						}, 500);
 					}
 				},
-				recommendedResponseChanged: function(newvalue, oldvalue) {
+				verifyErrorReceived :  function(newvalue, oldvalue){
+					this.verifiedconcepts = [];
+		   		  	 this.reset();
+			        	if(newvalue !== null){
+			        		this.async(function() {
+				         		this.response =  newvalue.response;
+				   		 	          }, 500);
+			        	}
+			     },
+				recommendedResponseReceived: function(newvalue, oldvalue) {
 					this.recommendedconcepts = [];
 					this.reset();
 					if (newvalue != null) {
@@ -327,6 +349,15 @@ recommended concepts against a particular column and then verifying one/more con
 						}, 500);
 					}
 				},
+				recommendedErrorReceived :  function(newvalue, oldvalue){
+					this.recommendedconcepts = [];
+		   		  	 this.reset();
+			        	if(newvalue !== null){
+			        		this.async(function() {
+				         		this.response =  newvalue.response;
+				   		 	          }, 500);
+			        	}
+			     },
 				reset: function(){
 					this.apiEntity = '';
 					this.path = '';
