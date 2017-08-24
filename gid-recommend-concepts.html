@@ -111,216 +111,231 @@ recommended concepts against a particular column and then verifying one/more con
 @demo demo/index.html
 -->
 <dom-module id="gid-recommend-concepts">
-    <template>
-       
-       <!-- fetch entity path  -->
-        	<gid-api entity = '{{apiEntity}}' path='{{path}}'></gid-api>
-       <!--  fetch entity path -->
-       
-       <!-- fetch recommended concepts  -->
-	        <gid-api auto=false
-	                 method='GET' api-url={{recommendedConceptUrl}} response='{{recommendedConceptResponse}}'
-	                 api-params={{recommendedConceptParams}} api-token={{recommendedConceptsToken}}
-	                 api-timeout={{recommendedConceptParams}}></gid-api>
-       <!-- fetch recommended concepts  -->
-		
+	<template>
+
+		<!-- fetch entity path  -->
+		<gid-api entity = '{{apiEntity}}' path='{{path}}'></gid-api>
+		<!--  fetch entity path -->
+
+		<!-- fetch recommended concepts  -->
+		<gid-api auto=false
+				 method='GET' api-url={{recommendedConceptUrl}} response='{{recommendedConceptResponse}}'
+				 api-params={{recommendedConceptParams}} api-token={{recommendedConceptsToken}}
+				 api-timeout={{recommendedConceptParams}}></gid-api>
+		<!-- fetch recommended concepts  -->
+
 		<!-- verify concept -->
-	        <gid-api auto=false
-	                 method='PUT' api-url={{verifyConceptUrl}} api-content-type = 'application/x-www-form-urlencoded' 
-	                 response='{{verifyConceptResponse}}'
-	                 api-params={{verifyConceptParams}} api-token={{verifyConceptToken}}
-	                 api-timeout={{verifyConceptParams}}></gid-api>
-        <!-- verify concept -->
+		<gid-api auto=false
+				 method='PUT' api-url={{verifyConceptUrl}} api-content-type = 'application/x-www-form-urlencoded'
+				 response='{{verifyConceptResponse}}'
+				 api-params={{verifyConceptParams}} api-token={{verifyConceptToken}}
+				 api-timeout={{verifyConceptParams}}></gid-api>
+		<!-- verify concept -->
 
-    </template>
-    <script>
-        (function () {
-            'use strict';
-            Polymer({
-                is: 'gid-recommend-concepts',
-                properties: {
-                	apiToken: {
-                    	type: String,
-                        notify: true,
-                        value : ''
-                    },
-                	verifyConceptUrl: {
-                        type: String,
-                        notify: true
-                    },
-                    verifyConceptTimeout: {
-                        type: Number,
-                        notify: true,
-                        value: 0
-                    },
-                    verifyConceptResponse: {
-                        type: Object,
-                        notify: true,
-                        observer: 'verifyResponseChanged'
-                    },
-                    verifyConceptParams: {
-                        type: String,
-                        notify: true
-                    },
-                    verifyConceptToken: {
-                    	type: String,
-                        notify: true
-                    },
-                    recommendedConceptUrl: {
-                        type: String,
-                        notify: true
-                    },
-                    recommendedConceptTimeout: {
-                        type: Number,
-                        notify: true,
-                        value: 0
-                    },
-                    recommendedConceptResponse: {
-                        type: Object,
-                        notify: true,
-                        observer: 'recommendedResponseChanged'
-                    },
-                    recommendedConceptParams: {
-                        type: String,
-                        notify: true
-                    },
-                    recommendedConceptsToken: {
-                    	type: String,
-                        notify: true
-                    },
-                    concept: {
-                        type: String,
-                        notify: true,
-                        value: ''
-                    },
-                    apiUrl: {
-                   	 	type: String,
-                        notify: true,
-                        value: ''
-                   },
-                   beVerified:{
-	                   	 type: Boolean,
-	                     notify: true,
-	                     value: false
-                 	},
-                    column: {
-                        type: String,
-                        notify: true,
-                        value: '',
-                        observer: 'columnChanged'
-                    },
-                    verifyVal:{
-                    	 type: String,
-                         notify: true,
-                         value: '',
-                         observer: 'verifyValChanged'
-                    },
-                    verifiedconcepts: {
-                    	type: Array,
-                    	notify: true    
-                   },
-                   recommendedconcepts: {
-	                   	type: Array,
-	                   	notify: true    
-                   },
-                   path: {
-                   	   type: String,
-                       notify: true,
-                       value: '',
-                       observer: 'pathReceived'
-                   },
-                   apiEntity: {
-                   	   type: String,
-                       notify: true
-                   }
-                },
-                pathReceived: function(){
-                	var url = '';
-                	var verify = '';
-                	if(this.path){
-                		var res = this.path.split(/{([^}]+)}/);
-                		for (var i in res) {
-                			if(!res[i].startsWith("/")){
-                					if(this[res[i]]){
-                						res[i] = this[res[i]];
-                					}
-                			}
-                		}
-               			url = this.apiUrl + res.join("");
-               			if(this.column && !this.beVerified){
-            	 			this.recommendedConceptUrl = url;
-            	 			if(this.apiToken){
-                   				this.recommendedConceptsToken =  this.apiToken;
-                   			}
-        	                this.recommendedConceptTimeout =  this.recommendedConceptTimeout - 1;
-            	 		}
-            	 		else if(this.column && this.verifyVal && this.beVerified){
-            	 			this.verifyConceptUrl = url;
-            	 			if(this.verifyVal === "YES"){
-    	                    	verify = 'Y';
-    	                    }
-    	                    else if(this.verifyVal === "NO"){
-    	                    	verify = 'F';
-    	                    }
-    	                    else{
-    	                    	verify = 'N';
-    	                    }
-    	                   	this.verifyConceptParams= JSON.stringify({
-    	           	        	  "hv": verify});
-    	                   	if(this.apiToken){
-                   				this.verifyConceptToken =  this.apiToken;
-                   			}
-            	 			this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
-            	 		}
-                		
-                	}
-                },
-                columnChanged: function(){
-            	 		if(this.column && !this.beVerified){
-            	 			if (!this.apiUrl) {
-	            	 			this.recommendedConceptUrl = this.importPath + 'assets/json/recommended-concepts.json';
-	        	                this.recommendedConceptTimeout =  this.recommendedConceptTimeout - 1;
-            	 			}
-            	 			else{
-            	 				this.apiEntity = 'RECOMMENDED-CONCEPTS';
-            	 			}
-                	}
-                },
-	             verifyValChanged: function () {
-	            	 if(this.column && this.verifyVal && this.beVerified){
-	            		 if (!this.apiUrl) {
-		     	 			//this.verifyConceptUrl = this.importPath + 'assets/json/verify-concept.json';
-		     	 			//this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
-	            		 }
-	            		 else {
-	            			 this.apiEntity = 'VERIFY-CONCEPT';
-	     	 			}
-	     	 		}
-	            },
-                
-                verifyResponseChanged: function (newvalue, oldvalue) {
-                	this.verifiedconcepts = [];
-                	 this.apiEntity = '';
-                     this.path = '';
-                	if (newvalue != null) {
-                        this.async(function () {
-                            this.verifiedconcepts = this.verifiedconcepts.concat(newvalue);
-                        }, 500);
-                	}
-                },
-                recommendedResponseChanged: function(newvalue, oldvalue) {
-                	this.recommendedconcepts = [];
-	               	this.apiEntity = '';
-	                this.path = '';
-                	if (newvalue != null) {
-                        this.async(function () {
-                            this.recommendedconcepts = this.recommendedconcepts.concat(newvalue.domains);
-                        }, 500);
-                	}
-                }
-            });
-        })();
+	</template>
+	<script>
+		(function () {
+			'use strict';
+			Polymer({
+				is: 'gid-recommend-concepts',
+				properties: {
+					apiToken: {
+						type: String,
+						notify: true,
+						value : ''
+					},
+					verifyConceptUrl: {
+						type: String,
+						notify: true
+					},
+					verifyConceptTimeout: {
+						type: Number,
+						notify: true,
+						value: 0
+					},
+					verifyConceptResponse: {
+						type: Object,
+						notify: true,
+						observer: 'verifyResponseChanged'
+					},
+					verifyConceptParams: {
+						type: String,
+						notify: true
+					},
+					verifyConceptToken: {
+						type: String,
+						notify: true
+					},
+					recommendedConceptUrl: {
+						type: String,
+						notify: true
+					},
+					recommendedConceptTimeout: {
+						type: Number,
+						notify: true,
+						value: 0
+					},
+					recommendedConceptResponse: {
+						type: Object,
+						notify: true,
+						observer: 'recommendedResponseChanged'
+					},
+					recommendedConceptParams: {
+						type: String,
+						notify: true
+					},
+					recommendedConceptsToken: {
+						type: String,
+						notify: true
+					},
+					concept: {
+						type: String,
+						notify: true,
+						value: ''
+					},
+					apiUrl: {
+						type: String,
+						notify: true,
+						value: ''
+					},
+					fetchRecommendedConcepts : {
+						type: Boolean,
+						notify: true,
+						value: false,
+						observer: 'fetchRecommendedConceptsObserver'
+					},
+					beVerified:{
+						type: Boolean,
+						notify: true,
+						value: false,
+						observer: 'beVerifiedObserver'
+					},
+					column: {
+						type: String,
+						notify: true,
+						value: ''
+					},
+					verifyVal:{
+						type: String,
+						notify: true,
+						value: ''
+					},
+					verifiedconcepts: {
+						type: Array,
+						notify: true
+					},
+					recommendedconcepts: {
+						type: Array,
+						notify: true
+					},
+					path: {
+						type: String,
+						notify: true,
+						value: '',
+						observer: 'pathReceived'
+					},
+					apiEntity: {
+						type: String,
+						notify: true
+					}
+				},
+				pathReceived: function(){
+					var url = '';
+					var verify = '';
+					if(this.path){
+						var res = this.path.split(/{([^}]+)}/);
+						for (var i in res) {
+							if(!res[i].startsWith("/")){
+								if(this[res[i]]){
+									res[i] = this[res[i]];
+								}
+							}
+						}
+						url = this.apiUrl + res.join("");
+						if(this.column && !this.beVerified){
+							this.recommendedConceptUrl = url;
+							if(this.apiToken){
+								this.recommendedConceptsToken =  this.apiToken;
+							}
+							this.recommendedConceptTimeout =  this.recommendedConceptTimeout - 1;
+						}
+						else if(this.column && this.verifyVal && this.beVerified){
+							this.verifyConceptUrl = url;
+							if(this.verifyVal === "YES"){
+								verify = 'Y';
+							}
+							else if(this.verifyVal === "NO"){
+								verify = 'F';
+							}
+							else{
+								verify = 'N';
+							}
+							this.verifyConceptParams= JSON.stringify({
+								"verified": verify});
+							if(this.apiToken){
+								this.verifyConceptToken =  this.apiToken;
+							}
+							this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
+						}
+
+					}
+				},
+				fetchRecommendedConceptsObserver: function(){
+					if(this.fetchRecommendedConcepts){
+						if(this.column && !this.beVerified){
+							if (!this.apiUrl) {
+								this.recommendedConceptUrl = this.importPath + 'assets/json/recommended-concepts.json';
+								this.recommendedConceptTimeout =  this.recommendedConceptTimeout - 1;
+							}
+							else{
+								this.apiEntity = 'RECOMMENDED-CONCEPTS';
+							}
+						}
+					}
+
+				},
+				beVerifiedObserver: function () {
+					if(this.beVerified) {
+						if (this.column && this.verifyVal) {
+							if (!this.apiUrl) {
+								//this.verifyConceptUrl = this.importPath + 'assets/json/verify-concept.json';
+								//this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
+							}
+							else {
+								this.apiEntity = 'VERIFY-CONCEPT';
+							}
+						}
+					}
+
+				},
+
+				verifyResponseChanged: function (newvalue, oldvalue) {
+					this.verifiedconcepts = [];
+					this.reset();
+					if (newvalue != null) {
+						this.async(function () {
+							this.verifiedconcepts = this.verifiedconcepts.concat(newvalue);
+						}, 500);
+					}
+				},
+				recommendedResponseChanged: function(newvalue, oldvalue) {
+					this.recommendedconcepts = [];
+					this.reset();
+					if (newvalue != null) {
+						this.async(function () {
+							this.recommendedconcepts = this.recommendedconcepts.concat(newvalue.domains);
+						}, 500);
+					}
+				},
+				reset: function(){
+					this.apiEntity = '';
+					this.path = '';
+					this.fetchRecommendedConcepts = false;
+					this.beVerified = false;
+				}
+			});
+		})();
 
 
-    </script>
+	</script>
 </dom-module>
