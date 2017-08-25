@@ -12,12 +12,17 @@ recommended concepts against a particular column and then verifying one/more con
 
 
    The following is used for fetching the recommended concepts against a particular column.
-   Here, 'column' is a mandatory parameter
-
+  
     <gid-recommend-concepts
-     api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev" column = '{{column}}'
-     recommendedconcepts = {{recommendedconcepts}}></gid-recommend-concepts>
+     api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev" column = '200009' 
+	 fetch-recommended-concepts = true recommendedconcepts = {{recommendedconcepts}}>
+	</gid-recommend-concepts>
  
+  The field 'column' and 'fetch-recommended-concepts' are mandatory.
+  
+  The field 'fetch-recommended-concepts' needs to be set to 'true' in order to fetch recommended concepts
+  
+  The property 'recommendedconcepts' returns the response against the rest call.
  
    API endpoint:
 
@@ -69,8 +74,7 @@ recommended concepts against a particular column and then verifying one/more con
 
 
    The following is used for verifying a particular recommended concept.
-    Here, 'column', 'be-verified' , 'verify-val'  and 'concept' are mandatory parameters
-
+    
 		<gid-recommend-concepts
 		api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
 		column = '200009'
@@ -80,6 +84,12 @@ recommended concepts against a particular column and then verifying one/more con
 		verifiedconcepts = {{verifiedconcepts}}> 
 		</gid-recommend-concepts>
 
+   The field 'column' , 'concept',  'verify-val' and 'be-verified' are mandatory.
+  
+   The field 'be-verified' needs to be set to 'true' in order to verify a particular concept.
+  
+   The property 'verifiedconcepts' returns the response against the rest call.	
+		
    API endpoint:
 
     PUT /columns/{columnId}/recommendedconcepts/{conceptId}
