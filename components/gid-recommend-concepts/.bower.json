@@ -17,11 +17,11 @@
     "gid-api": "makedatabetter-dev/gid-api"
   },
   "homepage": "https://github.com/makedatabetter-dev/gid-recommend-concepts",
-  "_release": "0c5f6dd1a1",
+  "_release": "4bf6767f51",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "0c5f6dd1a1597c63e25dc20fb870d1068bdb5898"
+    "commit": "4bf6767f51f892e7905cafb9e34877e8d0e8661d"
   },
   "_source": "https://github.com/makedatabetter-dev/gid-recommend-concepts.git",
   "_target": "*",
