@@ -7,7 +7,8 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.6.0",
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.4",
-    "polymer-global-variables": "1.1.0"
+    "polymer-global-variables": "1.1.0",
+    "lodash": "4.17.4"
   },
   "devDependencies": {
   	"iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

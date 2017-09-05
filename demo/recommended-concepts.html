@@ -14,7 +14,7 @@
 	<template>
 
 		<gid-recommend-concepts api-url="https://srv-34-197-77-167.globalids.com:8443/api/v1"
-								column = '6877887334376552697' api-token = 'MTAxNjUwMzAxMTUwMzU1NjY3ODU3MDA5MDFY'
+								column = '6877887334376552697' api-token = 'MTAxNjUwMzAxMTUwNDYwMjEzMjIwOTA5MDFY'
 								fetch-recommended-concepts = true
 								recommendedconcepts = {{recommendedconcepts}}>
 		</gid-recommend-concepts>
@@ -38,7 +38,7 @@
 		<template is="dom-if" if="[[beVerified]]">
 			<gid-recommend-concepts api-url="https://srv-34-197-77-167.globalids.com:8443/api/v1"
 									column = '6877887334376552697'
-									api-token = 'MTAxNjUwMzAxMTUwMzU1NjY3ODU3MDA5MDFY'
+									api-token = 'MTAxNjUwMzAxMTUwNDYwMjEzMjIwOTA5MDFY'
 									be-verified = {{beVerified}}
 									concept = "{{concept}}"
 									verify-val = "{{verifyVal}}"
@@ -57,7 +57,7 @@
 							</tr>
 							<tr>
 								<td>{{item.label}}</td>
-								<td>{{item.verified}}</td>
+								<td>{{item.assessment}}</td>
 							</tr>
 						</table>
 					</div>
@@ -125,24 +125,24 @@
 					this.beVerified = true;
 				},
 				verifiedConceptsObserver: function () {
-		        	 if(this.verifiedconcepts){	
-						if(this.verifiedconcepts.errorCode){
-							this.isConceptVerifySuccess = false;
-						}
-						else{
-							this.isConceptVerifySuccess =  true;
-						}
-		        	 }
+	        	    if(this.verifiedconcepts.length > 0){
+		  				if(this.verifiedconcepts[0]['errorCode']){
+		  					this.isConceptVerifySuccess = false;
+		  				}
+		  				else{
+		  					this.isConceptVerifySuccess =  true;
+		  				}
+		          	 }
 		         },
 		         recommendedConceptsObserver: function () {
-		        	 if(this.recommendedconcepts){	
-						if(this.recommendedconcepts.errorCode){
-							this.isConceptRecommendedSuccess = false;
-						}
-						else{
-							this.isConceptRecommendedSuccess =  true;
-						}
-		        	 }
+		        	 if(this.recommendedconcepts.length > 0){
+		  				if(this.recommendedconcepts[0]['errorCode']){
+		  					this.isConceptRecommendedSuccess = false;
+		  				}
+		  				else{
+		  					this.isConceptRecommendedSuccess =  true;
+		  				}
+		          	 }
 		         }
 
 			});

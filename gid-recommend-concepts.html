@@ -123,24 +123,24 @@ recommended concepts against a particular column and then verifying one/more con
 <dom-module id="gid-recommend-concepts">
 	<template>
 
-		<!-- fetch entity path  -->
-		<gid-api entity = '{{apiEntity}}' path-key= '{{pathKey}}' path='{{path}}'></gid-api>
+		<!-- fetch entity _path  -->
+		<gid-api entity = '{{_apiEntity}}' path-key= '{{_pathKey}}' path='{{_path}}'></gid-api>
 		<!--  fetch entity path -->
 
 		<!-- fetch recommended concepts  -->
 		<gid-api auto=false
-				 method='GET' api-url={{recommendedConceptUrl}} response='{{recommendedConceptResponse}}'
+				 method='GET' api-url={{_recommendedConceptUrl}} response='{{recommendedConceptResponse}}'
 				 error = '{{recommendedConceptError}}'
-				 api-params={{recommendedConceptParams}} api-token={{recommendedConceptsToken}}
-				 api-timeout={{recommendedConceptParams}}></gid-api>
+				 api-params={{_recommendedConceptParams}} api-token={{_recommendedConceptsToken}}
+				 api-timeout={{_recommendedConceptTimeout}}></gid-api>
 		<!-- fetch recommended concepts  -->
 
 		<!-- verify concept -->
 		<gid-api auto=false
-				 method='PUT' api-url={{verifyConceptUrl}} api-content-type = 'application/x-www-form-urlencoded'
+				 method='PUT' api-url={{_verifyConceptUrl}} api-content-type = 'application/x-www-form-urlencoded'
 				 response='{{verifyConceptResponse}}' error = '{{verifyConceptError}}'
-				 api-params={{verifyConceptParams}} api-token={{verifyConceptToken}}
-				 api-timeout={{verifyConceptParams}}></gid-api>
+				 api-params={{_verifyConceptParams}} api-token={{_verifyConceptToken}}
+				 api-timeout={{_verifyConceptTimeout}}></gid-api>
 		<!-- verify concept -->
 
 	</template>
@@ -150,121 +150,151 @@ recommended concepts against a particular column and then verifying one/more con
 			Polymer({
 				is: 'gid-recommend-concepts',
 				properties: {
+					/*Authorization token for accessing rest api*/
 					apiToken: {
 						type: String,
 						notify: true,
 						value : ''
 					},
-					verifyConceptUrl: {
+					/*Url sent to gid-api for concept verification*/
+					_verifyConceptUrl: {
 						type: String,
 						notify: true
 					},
-					verifyConceptTimeout: {
+					/*Timeout sent to gid-api for concept verification*/
+					_verifyConceptTimeout: {
 						type: Number,
 						notify: true,
 						value: 0
 					},
+					/*Response sent to gid-api for concept verification. This is a private property*/
 					verifyConceptResponse: {
 						type: Object,
 						notify: true,
-						observer: 'verifyResponseReceived'
+						observer: '_verifyResponseReceived'
 					},
+					/*Error sent to gid-api for concept verification. This is a private property*/
 					verifyConceptError : {
 			 	   		type: String,
 		 	   	    	notify: true,
-		 	   	    	observer : 'verifyErrorReceived'
+		 	   	    	observer : '_verifyErrorReceived'
 		 	   		},
-					verifyConceptParams: {
+		 	   		/*Params sent to gid-api for concept verification*/
+					_verifyConceptParams: {
 						type: String,
 						notify: true
 					},
-					verifyConceptToken: {
+					/*Token sent to gid-api for concept verification*/
+					_verifyConceptToken: {
 						type: String,
 						notify: true
 					},
-					recommendedConceptUrl: {
+					/*Url sent to gid-api for concept recommendation*/
+					_recommendedConceptUrl: {
 						type: String,
 						notify: true
 					},
-					recommendedConceptTimeout: {
+					/*Timeout sent to gid-api for concept recommendation*/
+					_recommendedConceptTimeout: {
 						type: Number,
 						notify: true,
 						value: 0
 					},
+					/*Response sent to gid-api for concept verification. This is a private property*/
 					recommendedConceptResponse: {
 						type: Object,
 						notify: true,
-						observer: 'recommendedResponseReceived'
+						observer: '_recommendedResponseReceived'
 					},
+					/*Error sent to gid-api for concept verification. This is a private property*/
 					recommendedConceptError : {
 			 	   		type: String,
 		 	   	    	notify: true,
-		 	   	    	observer : 'recommendedErrorReceived'
+		 	   	    	observer : '_recommendedErrorReceived'
 		 	   		},
-					recommendedConceptParams: {
+		 	   		/*Params sent to gid-api for concept recommendation*/
+					_recommendedConceptParams: {
 						type: String,
 						notify: true
 					},
-					recommendedConceptsToken: {
+					/*Token sent to gid-api for concept recommendation*/
+					_recommendedConceptsToken: {
 						type: String,
 						notify: true
 					},
+					/*Concept Id*/
 					concept: {
 						type: String,
 						notify: true,
 						value: ''
 					},
+					/*Column Id*/
 					column: {
 						type: String,
 						notify: true,
 						value: ''
 					},
+					/*Base url*/
 					apiUrl: {
 						type: String,
 						notify: true,
 						value: ''
 					},
+					/*The verification flag. It can be 'Y'(Yes), 'N'(No) or 'M'(Maybe)*/
 					verifyVal:{
 						type: String,
 						notify: true,
 						value: ''
 					},
+					/*This flag needs to be set to 'true' to verify a concept*/
 					beVerified:{
 						type: Boolean,
 						notify: true,
 						value: false,
-						observer: 'beVerifiedObserver'
+						observer: '_beVerifiedObserver'
 					},
+					/*This flag needs to be set to 'true' to fetch recommended concepts*/
 					fetchRecommendedConcepts : {
 						type: Boolean,
 						notify: true,
 						value: false,
-						observer: 'fetchRecommendedConceptsObserver'
+						observer: '_fetchRecommendedConceptsObserver'
 					},
+					/*Object for storing success/error response in case of concept verification*/
 					verifiedconcepts: {
 						type: Array,
 						notify: true
 					},
+					/*Object for storing success/error response in case of concept recommendation*/
 					recommendedconcepts: {
 						type: Array,
 						notify: true
 					},
-					path: {
+					/*The api path*/
+					_path: {
 						type: String,
 						notify: true,
 						value: '',
-						observer: 'pathReceived'
+						observer: '_pathReceived'
 					},
-					apiEntity: {
+					/*Api entity sent to gid-api*/
+					_apiEntity: {
 						type: String,
 						notify: true
-					}
+					},
+					/*The api path key*/
+	     	       	_pathKey: {
+	               	   type: String,
+	                   notify: true,
+	                   value: ''
+	                }
 				},
-				pathReceived: function(){
+				/* Observer of api path */
+				_pathReceived: function(){
 					var url = '';
 					var verify = '';
-					if(this.path){
-						var res = this.path.split(/{([^}]+)}/);
+					if(this._path){
+						var res = this._path.split(/{([^}]+)}/);
 						for (var i in res) {
 							if(!res[i].startsWith("/")){
 								if(this[res[i]]){
@@ -274,103 +304,109 @@ recommended concepts against a particular column and then verifying one/more con
 						}
 						url = this.apiUrl + res.join("");
 						if(this.column && !this.beVerified){
-							this.recommendedConceptUrl = url;
+							this._recommendedConceptUrl = url;
 							if(this.apiToken){
-								this.recommendedConceptsToken =  this.apiToken;
+								this._recommendedConceptsToken =  this.apiToken;
 							}
-							this.recommendedConceptTimeout =  this.recommendedConceptTimeout - 1;
+							this._recommendedConceptTimeout =  this._recommendedConceptTimeout - 1;
 						}
 						else if(this.column && this.verifyVal && this.beVerified){
-							this.verifyConceptUrl = url;
+							this._verifyConceptUrl = url;
 							if(this.verifyVal === "YES"){
 								verify = 'Y';
 							}
 							else if(this.verifyVal === "NO"){
-								verify = 'F';
-							}
-							else{
 								verify = 'N';
 							}
-							this.verifyConceptParams= JSON.stringify({
-								"verified": verify});
-							if(this.apiToken){
-								this.verifyConceptToken =  this.apiToken;
+							else{
+								verify = 'M';
 							}
-							this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
+							this._verifyConceptParams= JSON.stringify({
+								"assessment": verify});
+							if(this.apiToken){
+								this._verifyConceptToken =  this.apiToken;
+							}
+							this._verifyConceptTimeout =  this._verifyConceptTimeout - 1;
 						}
 
 					}
 				},
-				fetchRecommendedConceptsObserver: function(){
+				/* Observer of 'fetchRecommendedConcepts' flag */
+				_fetchRecommendedConceptsObserver: function(){
 					if(this.fetchRecommendedConcepts){
 						if(this.column && !this.beVerified){
 							if (!this.apiUrl) {
-								this.recommendedConceptUrl = this.importPath + 'assets/json/recommended-concepts.json';
-								this.recommendedConceptTimeout =  this.recommendedConceptTimeout - 1;
+								this._recommendedConceptUrl = this.importPath + 'assets/json/recommended-concepts.json';
+								this._recommendedConceptTimeout =  this._recommendedConceptTimeout - 1;
 							}
 							else{
-								this.pathKey =  'default';
-								this.apiEntity = 'RECOMMENDED-CONCEPTS';
+								this._pathKey =  'default';
+								this._apiEntity = 'RECOMMENDED-CONCEPTS';
 							}
 						}
 					}
 
 				},
-				beVerifiedObserver: function () {
+				/* Observer of 'beVerified' flag */
+				_beVerifiedObserver: function () {
 					if(this.beVerified) {
 						if (this.column && this.verifyVal) {
 							if (!this.apiUrl) {
-								//this.verifyConceptUrl = this.importPath + 'assets/json/verify-concept.json';
-								//this.verifyConceptTimeout =  this.verifyConceptTimeout - 1;
+								//this._verifyConceptUrl = this.importPath + 'assets/json/verify-concept.json';
+								//this._verifyConceptTimeout =  this._verifyConceptTimeout - 1;
 							}
 							else {
-								this.pathKey =  'default';
-								this.apiEntity = 'VERIFY-CONCEPT';
+								this._pathKey =  'default';
+								this._apiEntity = 'VERIFY-CONCEPT';
 							}
 						}
 					}
 
 				},
-
-				verifyResponseReceived: function (newvalue, oldvalue) {
+				/* Concept verification success response handler */
+				_verifyResponseReceived: function (newvalue, oldvalue) {
 					this.verifiedconcepts = [];
-					this.reset();
+					this._reset();
 					if (newvalue != null) {
 						this.async(function () {
 							this.verifiedconcepts = this.verifiedconcepts.concat(newvalue);
 						}, 500);
 					}
 				},
-				verifyErrorReceived :  function(newvalue, oldvalue){
+				/* Concept verification error response handler */
+				_verifyErrorReceived :  function(newvalue, oldvalue){
 					this.verifiedconcepts = [];
-		   		  	 this.reset();
+		   		  	 this._reset();
 			        	if(newvalue !== null){
 			        		this.async(function() {
 				         		this.verifiedconcepts =  newvalue.response;
 				   		 	          }, 500);
 			        	}
 			     },
-				recommendedResponseReceived: function(newvalue, oldvalue) {
+			    /* Concept recommendation success response handler */
+				_recommendedResponseReceived: function(newvalue, oldvalue) {
 					this.recommendedconcepts = [];
-					this.reset();
+					this._reset();
 					if (newvalue != null) {
 						this.async(function () {
 							this.recommendedconcepts = this.recommendedconcepts.concat(newvalue.domains);
 						}, 500);
 					}
 				},
-				recommendedErrorReceived :  function(newvalue, oldvalue){
+				/* Concept recommendation error response handler */
+				_recommendedErrorReceived :  function(newvalue, oldvalue){
 					this.recommendedconcepts = [];
-		   		  	 this.reset();
+		   		  	 this._reset();
 			        	if(newvalue !== null){
 			        		this.async(function() {
 				         		this.recommendedconcepts =  newvalue.response;
 				   		 	          }, 500);
 			        	}
 			     },
-				reset: function(){
-					this.apiEntity = '';
-					this.path = '';
+			   /* Error method */
+				_reset: function(){
+					this._apiEntity = '';
+					this._path = '';
 					this.fetchRecommendedConcepts = false;
 					this.beVerified = false;
 				}
