@@ -22,10 +22,22 @@ var apiPath = {
 		    "all": "/schemas/{schema}/tables"
 		  },
 		  "columns": {
-		    "table": "/domains/{concept}/tables/{table}/columns",
-		    "schema": "/domains/{concept}/schemas/{schema}/columns",
-		    "database": "/domains/{concept}/applications/{application}/databases/{database}/columns",
-		    "application": "/domains/{concept}/applications/{application}/columns"
+			  "table": {
+			   "default":"/domains/{concept}/tables/{table}/columns",
+			   "all":"/tables/{table}/columns"
+			  },
+			  "schema": {
+			   "default" :"/domains/{concept}/schemas/{schema}/columns",
+			   "all":"/schemas/{schema}/columns"
+			  },
+			  "database": {
+			   "default" :"/domains/{concept}/applications/{application}/databases/{database}/columns",
+			   "all":"/applications/{application}/database/{database}/columns"
+			  },
+			  "application": {
+			   "default": "/domains/{concept}/applications/{application}/columns",
+			   "all" : "/applications/{application}/columns"
+			  }
 		  },
 		  "get-samples": {
 			 "default": "/samples"

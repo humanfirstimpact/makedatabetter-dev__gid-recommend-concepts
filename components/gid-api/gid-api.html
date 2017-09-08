@@ -4,6 +4,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 
+<script src="../lodash/dist/lodash.min.js"></script>
 <script src="assets/js/gidRestApi.js"></script>
 <!--
 `gid-api`
@@ -51,71 +52,82 @@ element.
       Polymer({
         is:'gid-api',
         properties:{
+        	/* Base url received from data components */
         	apiUrl:  {
        			type:String,
        			notify:true
         	},
+        	/* Parameters received from data components */
         	apiParams: {
        			type:String,
        			notify:true
         	},
+        	/* Content type for rest call, default value is 'application/json' */
         	apiContentType: {
        			type: String,
        			notify: true,
        			value: 'application/json'
        		},
-        	attrName :{
-       			type:String,
-       			notify:true
-        	},
+        	/* Header for a rest call */
         	apiHeader:  {
        			type:Object,
        			notify:true,
        			value: {}
         	},
+        	/* Timeout for a particular rest call */
         	apiTimeout:{
         		type: Number,
     	        notify: true,
     	        value: 0
         	},
+        	/* The response object */
    	     	response: {
 	   	        type: Object,
 	   	        notify: true
            },
+           /* Flag to trigger rest call. Default value is 'true' */
            auto:{
 	       		 type:Boolean,
 	       	     notify: true,
 	       	     value:true
        		},
+       		/* Method for a rest call. Default is 'GET'. Other probable
+       		   values can be 'POST', 'PUT', 'DELETE' */
        		method:{
        			type:String,
        			notify:true,
        			value:"GET"
        		},
+       		/* The error object */
        		error:{
        			type:String,
        			notify:true,
        			observer: 'errorReceived'
        		},
+       		/* The request body for a particular rest call */
        		requestBody: {
        			type: Object,
 	   	        notify: true
        		},
+       		/* Entity received from data components */
        		entity: {
        			type:String,
        			notify:true,
        			observer: 'entityReceived'
        		},
+       		/* Path key received from data components */
        		pathKey: {
        			type:String,
        			notify:true,
        			value: ''
        		},
+       		/* Api path sent to data components */
        		path: {
        			type:String,
        			notify:true,
        			value: ''
        		},
+       		/* Api token received from data components */
        		apiToken: {
        			type:String,
        			notify:true,
@@ -125,9 +137,11 @@ element.
        		
        		
         },
+        /* Processing api parameters */
         _processParams: function(apiParams){
         	return JSON.parse(apiParams);
         },
+        /*  Observer for 'entity' property */
         entityReceived: function(){
         	var that = this;
         	var apiList = {};
@@ -138,15 +152,18 @@ element.
         		apiList =  apiPath;
         	}
         	if(that.entity){
-	                    that.path = apiList[that.entity.toLowerCase()][that.pathKey];
+        				var temp = that.entity.toLowerCase() + '.' + that.pathKey;
+	                    that.path = _.get(apiList, temp);
         	}
         	 
         },
+        /* Observer for 'apiToken' property */
         apiTokenReceived: function(){
         	if(this.apiToken){
         		this.apiHeader["Authorization"] = 'Bearer ' + this.apiToken;
         	}
         },
+        /* Observer of 'error' property */
         errorReceived: function(newvalue, oldvalue){
         	if(newvalue !== null && newvalue.response !== null){
         		if(newvalue.response.errorCode === "40101"){

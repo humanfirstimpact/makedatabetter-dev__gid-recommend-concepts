@@ -7,7 +7,8 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.6.0",
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.4",
-    "polymer-global-variables": "1.1.0"
+    "polymer-global-variables": "1.1.0",
+    "lodash": "4.17.4"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
@@ -15,12 +16,15 @@
     "web-component-tester": "^4.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
   },
+  "resolutions": {
+    "lodash": "4.17.4"
+  },
   "homepage": "https://github.com/makedatabetter-dev/gid-api",
-  "_release": "16b44366c9",
+  "_release": "94762e424f",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "16b44366c98042a80fffee84f1ed125faecf5fa7"
+    "commit": "94762e424f65f523c3ec1b4ec7e4f36960535ea5"
   },
   "_source": "https://github.com/makedatabetter-dev/gid-api.git",
   "_target": "*",
