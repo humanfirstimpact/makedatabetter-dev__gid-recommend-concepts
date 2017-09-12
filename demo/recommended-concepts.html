@@ -35,25 +35,25 @@
 <!--             <p>{{response.developerMessage}}</p> -->
 <!--         </template> -->
         
-		<template is="dom-if" if="[[beVerified]]">
+		<template is="dom-if" if="[[beassessment]]">
 			<gid-recommend-concepts api-url="https://srv-34-197-77-167.globalids.com:8443/api/v1"
 									column = '6877887334376552697'
 									api-token = 'MTAxNjUwMzAxMTUwNDYwMjEzMjIwOTA5MDFY'
-									be-verified = {{beVerified}}
+									be-assessment = {{beassessment}}
 									concept = "{{concept}}"
 									verify-val = "{{verifyVal}}"
-									verifiedconcepts = {{verifiedconcepts}}>
+									assessmentconcepts = {{assessmentconcepts}}>
 			</gid-recommend-concepts>
 		</template>
 <!-- 		<template is="dom-if" if="[[isConceptVerifySuccess]]"> -->
-			<template is="dom-if" if="[[verifiedconcepts.length]]">
-				<template is="dom-repeat" items="[[verifiedconcepts]]">
+			<template is="dom-if" if="[[assessmentconcepts.length]]">
+				<template is="dom-repeat" items="[[assessmentconcepts]]">
 					<div class="horizontal-section">
 						<p></p>
 						<table style="width:50%">
 							<tr>
 								<th>Concept Label</th>
-								<th>Is verified</th>
+								<th>Is assessment</th>
 							</tr>
 							<tr>
 								<td>{{item.label}}</td>
@@ -84,7 +84,7 @@
 						notify: true,
 						value: ''
 					},
-					beVerified: {
+					beassessment: {
 						type: Boolean,
 						notify: true
 					},
@@ -98,10 +98,10 @@
 						notify: true,
 						value: ''
 					},
-					verifiedconcepts: {
+					assessmentconcepts: {
 						type: Array,
 						notify: true,
-						observer: 'verifiedConceptsObserver'
+						observer: 'assessmentConceptsObserver'
 					},
 					recommendedconcepts: {
 						type: Array,
@@ -122,11 +122,11 @@
 				verifyConcept: function(event){
 					this.concept = event.currentTarget.id;
 					this.verifyVal = event.currentTarget.value;
-					this.beVerified = true;
+					this.beassessment = true;
 				},
-				verifiedConceptsObserver: function () {
-	        	    if(this.verifiedconcepts.length > 0){
-		  				if(this.verifiedconcepts[0]['errorCode']){
+				assessmentConceptsObserver: function () {
+	        	    if(this.assessmentconcepts.length > 0){
+		  				if(this.assessmentconcepts[0]['errorCode']){
 		  					this.isConceptVerifySuccess = false;
 		  				}
 		  				else{
