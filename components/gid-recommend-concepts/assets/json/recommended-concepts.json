@@ -4,19 +4,19 @@
          "id":"4920055981064928686",
          "label":"Last Name",
          "relevance":"N",
-         "verified":"1.54"
+         "assessment":"1.54"
       },
       {
          "id":"221188726146740308",
          "label":"Date of Birth",
          "relevance":"N",
-         "verified":"5.88"
+         "assessment":"5.88"
       },
       {
          "id":"-886082613329644447",
          "label":"First Name",
          "relevance":"N",
-         "verified":"5.88"
+         "assessment":"5.88"
       }
    ],
    "_meta":{
