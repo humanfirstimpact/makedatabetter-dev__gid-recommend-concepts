@@ -78,17 +78,17 @@ recommended concepts against a particular column and then verifying one/more con
 		<gid-recommend-concepts
 		api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
 		column = '200009'
-		be-assessment = true
+		be-verified = true
 		concept = '100002'
 		verify-val = 'YES'
-		assessmentconcepts = {{assessmentconcepts}}> 
+		verifiedconcepts = {{verifiedconcepts}}> 
 		</gid-recommend-concepts>
 
-   The field 'column' , 'concept',  'verify-val' and 'be-assessment' are mandatory.
+   The field 'column' , 'concept',  'verify-val' and 'be-verified' are mandatory.
   
-   The field 'be-assessment' needs to be set to 'true' in order to verify a particular concept.
+   The field 'be-verified' needs to be set to 'true' in order to verify a particular concept.
   
-   The property 'assessmentconcepts' returns the response against the rest call.	
+   The property 'verifiedconcepts' returns the response against the rest call.	
 		
    API endpoint:
 
@@ -247,11 +247,11 @@ recommended concepts against a particular column and then verifying one/more con
 						value: ''
 					},
 					/*This flag needs to be set to 'true' to verify a concept*/
-					beassessment:{
+					beVerified:{
 						type: Boolean,
 						notify: true,
 						value: false,
-						observer: '_beassessmentObserver'
+						observer: '_beVerifiedObserver'
 					},
 					/*This flag needs to be set to 'true' to fetch recommended concepts*/
 					fetchRecommendedConcepts : {
@@ -261,7 +261,7 @@ recommended concepts against a particular column and then verifying one/more con
 						observer: '_fetchRecommendedConceptsObserver'
 					},
 					/*Object for storing success/error response in case of concept verification*/
-					assessmentconcepts: {
+					verifiedconcepts: {
 						type: Array,
 						notify: true
 					},
@@ -303,14 +303,14 @@ recommended concepts against a particular column and then verifying one/more con
 							}
 						}
 						url = this.apiUrl + res.join("");
-						if(this.column && !this.beassessment){
+						if(this.column && !this.beVerified){
 							this._recommendedConceptUrl = url;
 							if(this.apiToken){
 								this._recommendedConceptsToken =  this.apiToken;
 							}
 							this._recommendedConceptTimeout =  this._recommendedConceptTimeout - 1;
 						}
-						else if(this.column && this.verifyVal && this.beassessment){
+						else if(this.column && this.verifyVal && this.beVerified){
 							this._verifyConceptUrl = url;
 							if(this.verifyVal === "YES"){
 								verify = 'Y';
@@ -334,7 +334,7 @@ recommended concepts against a particular column and then verifying one/more con
 				/* Observer of 'fetchRecommendedConcepts' flag */
 				_fetchRecommendedConceptsObserver: function(){
 					if(this.fetchRecommendedConcepts){
-						if(this.column && !this.beassessment){
+						if(this.column && !this.beVerified){
 							if (!this.apiUrl) {
 								this._recommendedConceptUrl = this.importPath + 'assets/json/recommended-concepts.json';
 								this._recommendedConceptTimeout =  this._recommendedConceptTimeout - 1;
@@ -347,9 +347,9 @@ recommended concepts against a particular column and then verifying one/more con
 					}
 
 				},
-				/* Observer of 'beassessment' flag */
-				_beassessmentObserver: function () {
-					if(this.beassessment) {
+				/* Observer of 'beVerified' flag */
+				_beVerifiedObserver: function () {
+					if(this.beVerified) {
 						if (this.column && this.verifyVal) {
 							if (!this.apiUrl) {
 								//this._verifyConceptUrl = this.importPath + 'assets/json/verify-concept.json';
@@ -365,21 +365,21 @@ recommended concepts against a particular column and then verifying one/more con
 				},
 				/* Concept verification success response handler */
 				_verifyResponseReceived: function (newvalue, oldvalue) {
-					this.assessmentconcepts = [];
+					this.verifiedconcepts = [];
 					this._reset();
 					if (newvalue != null) {
 						this.async(function () {
-							this.assessmentconcepts = this.assessmentconcepts.concat(newvalue);
+							this.verifiedconcepts = this.verifiedconcepts.concat(newvalue);
 						}, 500);
 					}
 				},
 				/* Concept verification error response handler */
 				_verifyErrorReceived :  function(newvalue, oldvalue){
-					this.assessmentconcepts = [];
+					this.verifiedconcepts = [];
 		   		  	 this._reset();
 			        	if(newvalue !== null){
 			        		this.async(function() {
-				         		this.assessmentconcepts =  newvalue.response;
+				         		this.verifiedconcepts =  newvalue.response;
 				   		 	          }, 500);
 			        	}
 			     },
@@ -408,7 +408,7 @@ recommended concepts against a particular column and then verifying one/more con
 					this._apiEntity = '';
 					this._path = '';
 					this.fetchRecommendedConcepts = false;
-					this.beassessment = false;
+					this.beVerified = false;
 				}
 			});
 		})();
