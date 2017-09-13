@@ -14,7 +14,7 @@
 	<template>
 
 		<gid-recommend-concepts api-url="https://srv-34-197-77-167.globalids.com:8443/api/v1"
-								column = '6877887334376552697' api-token = 'MTAxNjUwMzAxMTUwNDYwMjEzMjIwOTA5MDFY'
+								column = '-4971610783073554289' api-token = 'MTAxNjUwMzAxMTUwNTI4OTU5NTA1OTA5MDFY'
 								fetch-recommended-concepts = true
 								recommendedconcepts = {{recommendedconcepts}}>
 		</gid-recommend-concepts>
@@ -35,25 +35,25 @@
 <!--             <p>{{response.developerMessage}}</p> -->
 <!--         </template> -->
         
-		<template is="dom-if" if="[[beassessment]]">
+		<template is="dom-if" if="[[beVerified]]">
 			<gid-recommend-concepts api-url="https://srv-34-197-77-167.globalids.com:8443/api/v1"
 									column = '6877887334376552697'
-									api-token = 'MTAxNjUwMzAxMTUwNDYwMjEzMjIwOTA5MDFY'
-									be-assessment = {{beassessment}}
+									api-token = 'MTAxNjUwMzAxMTUwNTI4OTU5NTA1OTA5MDFY'
+									be-verified = {{beVerified}}
 									concept = "{{concept}}"
 									verify-val = "{{verifyVal}}"
-									assessmentconcepts = {{assessmentconcepts}}>
+									verifiedconcepts = {{verifiedconcepts}}>
 			</gid-recommend-concepts>
 		</template>
 <!-- 		<template is="dom-if" if="[[isConceptVerifySuccess]]"> -->
-			<template is="dom-if" if="[[assessmentconcepts.length]]">
-				<template is="dom-repeat" items="[[assessmentconcepts]]">
+			<template is="dom-if" if="[[verifiedconcepts.length]]">
+				<template is="dom-repeat" items="[[verifiedconcepts]]">
 					<div class="horizontal-section">
 						<p></p>
 						<table style="width:50%">
 							<tr>
 								<th>Concept Label</th>
-								<th>Is assessment</th>
+								<th>Is verified</th>
 							</tr>
 							<tr>
 								<td>{{item.label}}</td>
@@ -84,7 +84,7 @@
 						notify: true,
 						value: ''
 					},
-					beassessment: {
+					beVerified: {
 						type: Boolean,
 						notify: true
 					},
@@ -98,10 +98,10 @@
 						notify: true,
 						value: ''
 					},
-					assessmentconcepts: {
+					verifiedconcepts: {
 						type: Array,
 						notify: true,
-						observer: 'assessmentConceptsObserver'
+						observer: 'verifiedConceptsObserver'
 					},
 					recommendedconcepts: {
 						type: Array,
@@ -122,11 +122,11 @@
 				verifyConcept: function(event){
 					this.concept = event.currentTarget.id;
 					this.verifyVal = event.currentTarget.value;
-					this.beassessment = true;
+					this.beVerified = true;
 				},
-				assessmentConceptsObserver: function () {
-	        	    if(this.assessmentconcepts.length > 0){
-		  				if(this.assessmentconcepts[0]['errorCode']){
+				verifiedConceptsObserver: function () {
+	        	    if(this.verifiedconcepts.length > 0){
+		  				if(this.verifiedconcepts[0]['errorCode']){
 		  					this.isConceptVerifySuccess = false;
 		  				}
 		  				else{
