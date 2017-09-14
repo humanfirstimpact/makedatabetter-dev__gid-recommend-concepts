@@ -21,11 +21,11 @@
     "lodash": "4.17.4"
   },
   "homepage": "https://github.com/makedatabetter-dev/gid-recommend-concepts",
-  "_release": "aea2b73207",
+  "_release": "6986a98709",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "aea2b7320753baaa42d279edc7403505d50e2c7e"
+    "commit": "6986a987090e8a1690ecddc175f43402c62666d4"
   },
   "_source": "https://github.com/makedatabetter-dev/gid-recommend-concepts.git",
   "_target": "*",

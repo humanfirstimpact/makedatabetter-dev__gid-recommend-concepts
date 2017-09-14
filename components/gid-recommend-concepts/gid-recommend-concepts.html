@@ -13,16 +13,26 @@ recommended concepts against a particular column and then verifying one/more con
 
    The following is used for fetching the recommended concepts against a particular column.
   
-    <gid-recommend-concepts
-     api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev" column = '200009' 
-	 fetch-recommended-concepts = true recommendedconcepts = {{recommendedconcepts}}>
-	</gid-recommend-concepts>
+   	 <gid-recommend-concepts api-url="<your-api-url>" api-token="<your-api-token>"
+     column="<column-id>" fetch-recommended-concepts=true
+     recommendedconcepts = {{recommendedconcepts}}>
+     </gid-recommend-concepts>
  
-  The field 'column' and 'fetch-recommended-concepts' are mandatory.
+ To fetch the recommended concepts, the user needs to follow the steps mentioned below:
+
+ - The 'api-url' needs to be provided to specify the rest end point.
+ - The 'api-token' would contain the access token to access the mentioned rest end point.
+ - The 'column' parameter specifies the column id whose recommended concepts are to be fetched.
+ - To fetch the recommended concepts, user needs to set the 'fetch-recommended-concepts' flag to 'true' in order to trigger the rest call.
+ - The 'recommendedconcepts' property would return the response whether the recommended concepts has been fetched successfully or not.
+ 
+  The field 'column', 'fetch-recommended-concepts' and 'recommendedconcepts' are mandatory.
   
   The field 'fetch-recommended-concepts' needs to be set to 'true' in order to fetch recommended concepts
   
   The property 'recommendedconcepts' returns the response against the rest call.
+  
+  If 'api-url' is not provided, then the component would fetch sample data from mock json.
  
    API endpoint:
 
@@ -30,7 +40,7 @@ recommended concepts against a particular column and then verifying one/more con
 
    Input:
 
-     - Column Id 
+     - Column Id* 
 
    Sample Input: (Query params)
 
@@ -43,52 +53,58 @@ recommended concepts against a particular column and then verifying one/more con
 
    The output of this components will be as follows:
 
-	{
-	   "domains":[
-	      {
-		 "id":"4920055981064928686",
-		 "label":"Last Name",
-		 "assessment":"N",
-		 "relevance":"1.54"
-	      },
-	      {
-		 "id":"221188726146740308",
-		 "label":"Date of Birth",
-		 "assessment":"N",
-		 "relevance":"5.88"
-	      },
-	      {
-		 "id":"-886082613329644447",
-		 "label":"First Name",
-		 "assessment":"N",
-		 "relevance":"5.88"
-	      }
-	   ],
-	   "_meta":{
-	      "total":3,
-	      "offset":0,
-	      "limit":10
-	   }
+	{    "domains":[{
+			 "id":"4920055981064928686",
+			 "label":"Last Name",
+			 "assessment":"N",
+			 "relevance":"1.54"
+		      },
+		      {
+			 "id":"221188726146740308",
+			 "label":"Date of Birth",
+			 "assessment":"N",
+			 "relevance":"5.88"
+		      },
+		      {
+			 "id":"-886082613329644447",
+			 "label":"First Name",
+			 "assessment":"N",
+			 "relevance":"5.88"
+		      }],
+		   "_meta":{
+		      "total":3,
+		      "offset":0,
+		      "limit":10
+		   }
 	}
 
 
 
    The following is used for verifying a particular recommended concept.
     
-		<gid-recommend-concepts
-		api-url="https://ql50yzu0fj.execute-api.us-east-1.amazonaws.com/dev"
-		column = '200009'
-		be-verified = true
-		concept = '100002'
-		verify-val = 'YES'
-		verifiedconcepts = {{verifiedconcepts}}> 
+		<gid-recommend-concepts  api-url="<your-api-url>" api-token="<your-api-token>"
+		column="<column-id>" concept="<concept-id>"
+		verify-val="<verify-value>" be-verified = true  verifiedconcepts = {{verifiedconcepts}}> 
 		</gid-recommend-concepts>
+		
+  To verify a concept, the user needs to follow the steps mentioned below:
 
-   The field 'column' , 'concept',  'verify-val' and 'be-verified' are mandatory.
+ - The 'api-url' needs to be provided to specify the rest end point.
+ - The 'api-token' would contain the access token to access the mentioned rest end point.
+ - The 'column' parameter specifies the column id.
+ - The 'concept' parameter specifies the concept id to be verified.
+ - The 'verify-val' field specifies whether the concept is to be verified as 'YES', 'NO' or 'MAYBE'.
+ - To verify a concept, user needs to set the 'be-verified' flag to 'true' in order to trigger the rest call.
+ - The 'verifiedconcepts' property would return the response whether the concept has been verified successfully or not.
+
+   The field 'column' , 'concept',  'verify-val', 'be-verified' and 'verifiedconcepts' are mandatory.
   
    The field 'be-verified' needs to be set to 'true' in order to verify a particular concept.
   
    The property 'verifiedconcepts' returns the response against the rest call.	
+   
+   If 'api-url' is not provided, then the component would fetch sample data from mock json.
+   
 		
    API endpoint:
 
@@ -100,8 +116,8 @@ recommended concepts against a particular column and then verifying one/more con
 
    Input:
 
-     - Column Id 
-     - Concept Id
+     - Column Id*
+     - Concept Id*
 
    Output:
 
@@ -116,7 +132,8 @@ recommended concepts against a particular column and then verifying one/more con
 	    "relevance": 1.54,
 	    "lastUpdated": 1503508128418
 	  }
-
+	  
+Note: The inputs marked with '*' are mandatory inputs.
 
 @demo demo/index.html
 -->
